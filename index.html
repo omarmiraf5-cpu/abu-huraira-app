@@ -285,7 +285,7 @@ function Home(){
       <div class="glass">
         <div class="lbl-gold">Next Prayer</div>
         <div class="prayer-name">Asr</div>
-        <div class="prayer-sub">4:47 PM &nbsp;·&nbsp; in 1h 12m</div>
+        <div class="prayer-sub">4:45 PM &nbsp;·&nbsp; in 1h 12m</div>
       </div>
     </div>
     <div class="body-pad">
@@ -305,9 +305,9 @@ function Home(){
 }
 
 const PRAYERS=[
-  ['Fajr','5:41 AM','6:01 AM'],['Sunrise','7:22 AM',null],
-  ['Dhuhr','1:12 PM','1:22 PM'],['Asr','4:47 PM','4:57 PM'],
-  ['Maghrib','7:58 PM','8:03 PM'],['Isha','9:22 PM','9:37 PM']
+  ['Fajr','6:00 AM','6:15 AM'],
+  ['Dhuhr','1:30 PM','1:45 PM'],['Asr','4:45 PM','5:00 PM'],
+  ['Maghrib','Sunset','+10 mins'],['Isha','8:45 PM','9:00 PM']
 ];
 function Prayer(){
   return `<div class="scroll" style="padding-bottom:90px">
@@ -317,7 +317,7 @@ function Prayer(){
       <h1 style="font-size:24px;font-weight:600;color:#F3EEE2;margin:6px 0 20px">Prayer Times</h1>
       <div class="lbl-gold">Next Prayer</div>
       <div class="prayer-name" style="font-size:42px">Asr</div>
-      <div class="prayer-sub">4:47 PM &nbsp;·&nbsp; in 1h 12m</div>
+      <div class="prayer-sub">4:45 PM &nbsp;·&nbsp; in 1h 12m</div>
     </div>
     <div style="padding:22px 20px">
       <div class="card" style="border-radius:18px;overflow:hidden;margin-bottom:20px">
