@@ -383,6 +383,26 @@ function prayerRows(){
   });
 }
 
+/* ===================== reflection of the day ===================== */
+// Fills the "Live Now" spot with an Ayah/Hadith when nothing is actually
+// broadcasting; a real live flag from staff would take over this slot.
+const REFLECTIONS=[
+  {type:'Ayah', text:'Indeed, with hardship comes ease.', source:"Qur'an 94:6"},
+  {type:'Hadith', text:"The best of you are those who learn the Qur'an and teach it.", source:'Sahih al-Bukhari 5027'},
+  {type:'Ayah', text:'And whoever relies upon Allah - then He is sufficient for him.', source:"Qur'an 65:3"},
+  {type:'Hadith', text:'None of you truly believes until he loves for his brother what he loves for himself.', source:'Sahih al-Bukhari 13'},
+  {type:'Ayah', text:'So remember Me; I will remember you.', source:"Qur'an 2:152"},
+  {type:'Hadith', text:'The strong believer is better and more beloved to Allah than the weak believer, while there is good in both.', source:'Sahih Muslim 2664'},
+  {type:'Ayah', text:'Verily, in the remembrance of Allah do hearts find rest.', source:"Qur'an 13:28"},
+];
+function dayOfYearInZone(tz){
+  const {y,m,d}=ymdInZone(new Date(),tz);
+  return Math.round((Date.UTC(y,m-1,d)-Date.UTC(y,0,1))/86400000);
+}
+function reflectionOfDay(){
+  return REFLECTIONS[dayOfYearInZone(LOC.tz) % REFLECTIONS.length];
+}
+
 /* ============================ screens ============================ */
 function Home(){
   const next=nextPrayer();
@@ -404,10 +424,16 @@ function Home(){
         <a class="tile plain" data-go="Events">${svg(I.cal,18,'#12213B')}<span>Events</span></a>
         <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#12213B')}<span>Alerts</span></a>
       </div>
-      <div class="sec"><div class="sec-t">Live Now</div><div class="sec-r"></div></div>
-      <div class="live">${svg(I.spark,19,'#9A9284',1.6)}
-        <p>No active broadcast. This card lights up automatically when staff
-           starts a khutbah or class.</p></div>
+      ${(()=>{ const r=reflectionOfDay(); return `
+      <div class="sec"><div class="sec-t">Reflection of the Day</div><div class="sec-r"></div></div>
+      <div class="live" style="align-items:flex-start">
+        ${svg(I.spark,19,'#B9812E',1.6)}
+        <div>
+          <div class="badge" style="margin-bottom:8px">${r.type}</div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:16.5px;font-style:italic;color:var(--navy);line-height:1.5;margin:0 0 6px">&ldquo;${r.text}&rdquo;</p>
+          <p style="margin:0">${r.source} &middot; switches to live coverage automatically during a khutbah or class</p>
+        </div>
+      </div>`; })()}
     </div>
   </div>${tabbar('Home')}`;
 }
