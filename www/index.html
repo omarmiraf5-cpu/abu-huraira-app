@@ -25,6 +25,8 @@
     --navy:#16181C; --navy-lo:#22252B; --navy-hi:#0F1013;
     --metal:#9C7A3C; --metal-dk:#7A5F2E; --metal-lt:#C9A968; --metal-md:#9C7A3C;
     --scripture:#8B6A2E;
+    /* Maroon: a Donate-only accent, kept off every other screen */
+    --maroon:#7A1B2E; --maroon-lt:#9C2E44; --maroon-dk:#54121F;
     --cream:#EDEBE6; --ivory:#F7F6F3; --tint:rgba(156,122,60,.12);
     --ink:#16181C; --muted:#6B6E73; --faint:#9AA0A8;
     --line:rgba(22,24,28,.10);
@@ -117,8 +119,8 @@
   .tile.navy{background:linear-gradient(155deg,var(--navy-lo),var(--navy-hi));
     border:1px solid rgba(156,122,60,.3);
     box-shadow:0 6px 14px rgba(0,0,0,.28);color:#F3EEE2}
-  .tile.accent{background:linear-gradient(155deg,var(--metal-lt),var(--metal-md));
-    box-shadow:0 6px 14px rgba(180,130,40,.24);color:var(--navy)}
+  .tile.accent{background:linear-gradient(155deg,var(--maroon-lt),var(--maroon));
+    box-shadow:0 6px 14px rgba(122,27,46,.32);color:#F3EEE2}
   .tile.plain{background:var(--ivory);border:1px solid var(--line);
     box-shadow:0 4px 12px rgba(0,0,0,.18);color:var(--ink)}
 
@@ -153,9 +155,9 @@
   /* ---------- chips / donate ---------- */
   .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:600;
     border:1px solid rgba(22,24,28,.14);background:var(--ivory);color:var(--ink)}
-  .chip.on{border:none;color:var(--navy);font-weight:700;
-    background:linear-gradient(135deg,var(--metal-lt),var(--metal) 55%,var(--metal-dk));
-    box-shadow:0 4px 12px rgba(201,138,46,.35)}
+  .chip.on{border:none;color:#F3EEE2;font-weight:700;
+    background:linear-gradient(135deg,var(--maroon-lt),var(--maroon) 55%,var(--maroon-dk));
+    box-shadow:0 4px 12px rgba(122,27,46,.35)}
   .chiprow{display:flex;flex-wrap:wrap;gap:9px}
   .cap{font-size:12px;font-weight:700;letter-spacing:.06em;
     text-transform:uppercase;color:var(--muted);margin-bottom:12px}
@@ -166,7 +168,7 @@
     box-shadow:0 3px 10px rgba(18,33,59,.06)}
   .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(22,24,28,.28);
     flex-shrink:0;display:flex;align-items:center;justify-content:center}
-  .box.on{border:none;background:linear-gradient(135deg,var(--metal-lt),var(--metal-md))}
+  .box.on{border:none;background:linear-gradient(135deg,var(--maroon-lt),var(--maroon))}
 
   /* ---------- events ---------- */
   .ecard{background:var(--ivory);border:1px solid var(--line);border-radius:20px;
@@ -539,7 +541,7 @@ function Home(){
       <div class="sec"><div class="sec-t">Quick Access</div><div class="sec-r"></div></div>
       <div class="qa">
         <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#9C7A3C')}<span>Prayer Times</span></a>
-        <a class="tile accent" data-go="Donate">${svg(I.heart,18,'#16181C')}<span>Donate</span></a>
+        <a class="tile accent" data-go="Donate">${svg(I.heart,18,'#F3EEE2')}<span>Donate</span></a>
         <a class="tile plain" data-go="Events">${svg(I.cal,18,'#9C7A3C')}<span>Events</span></a>
         <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#9C7A3C')}<span>Alerts</span></a>
       </div>
@@ -598,13 +600,13 @@ function Donate(){
     <div class="lbl-dk">Sadaqah &amp; Support</div>
     <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
     <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
-      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#9C7A3C 60%)"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9C7A3C"/></svg>
-      <div style="width:34px;height:1px;background:#9C7A3C"></div>
-      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9C7A3C"/></svg>
-      <div style="width:34px;height:1px;background:#9C7A3C"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9C7A3C"/></svg>
-      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#9C7A3C 60%)"></div>
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#7A1B2E 60%)"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#7A1B2E"/></svg>
+      <div style="width:34px;height:1px;background:#7A1B2E"></div>
+      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#7A1B2E"/></svg>
+      <div style="width:34px;height:1px;background:#7A1B2E"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#7A1B2E"/></svg>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#7A1B2E 60%)"></div>
     </div>
     <div class="card" style="border-radius:22px;padding:22px 20px;margin-bottom:22px">
       <div class="cap">Category</div>
@@ -616,7 +618,7 @@ function Donate(){
         ${AMTS.map(a=>`<button class="chip ${st.amt===a?'on':''}" data-amt="${a}">$${a}</button>`).join('')}
       </div>
       <button data-rec style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px 2px;width:100%">
-        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#16181C',2.2):''}</div>
+        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#F3EEE2',2.2):''}</div>
         <div style="font-size:14px;color:var(--ink)">Make this a recurring monthly gift</div>
       </button>
     </div>
@@ -628,7 +630,7 @@ function Donate(){
       Pay with Google Pay</button>
     <button style="width:100%;background:none;border:none;color:var(--muted);font-size:13.5px;text-decoration:underline;padding:4px">Use a card instead</button>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px">
-      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9C7A3C"/></svg>
+      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#7A1B2E"/></svg>
       <div style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6">
         ${st.rec?'Recurring':'One-time'} · ${st.cat} · $${st.amt}</div>
     </div>
