@@ -76,4 +76,4 @@ approving the look and feel before development builds it for real.
 | Hijri date | 6 Rabi' al-Thānī 1448 | Live calculation |
 | Events | Three known weekly classes | Full program list from AHC |
 | Donation amounts | $10 / $25 / $50 / $100 | Confirm with AHC |
-| Daily reflections | 100 Ayah/Hadith quotes (65/35), citations checked against sunnah.com/standard Mushaf numbering | Have AHC's imam proofread wording and citations before treating as authoritative |
+| Daily reflections | 100 Ayah/Hadith quotes (65/35) with Arabic + English, citations checked against sunnah.com/standard Mushaf numbering | **Arabic text was NOT verified against a Quran/hadith API** (none reachable from the dev environment) - have AHC's imam proofread every Arabic string, translation, and citation letter-for-letter before this is treated as authoritative or shown to the community |
