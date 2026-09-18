@@ -44,6 +44,8 @@
   .brandline{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px}
   .brandline img{width:44px;height:44px;object-fit:contain;
     filter:drop-shadow(0 3px 6px rgba(0,0,0,.45))}
+  .brandline img.on-dark{background:#F3EFE6;border-radius:50%;padding:5px;
+    filter:none;box-shadow:0 3px 6px rgba(0,0,0,.35)}
   .brand-name{font-family:'Aladin',serif;font-size:21px;line-height:1.05;
     text-shadow:0 1px 3px rgba(0,0,0,.4)}
   .brand-sub{font-family:'Aladin',serif;font-size:10.5px;color:var(--metal);
@@ -277,7 +279,7 @@ const TABS=[
 ];
 const brand=(light)=>`
   <div class="brandline">
-    <img src="assets/mark-${light?'light':'navy'}.png" alt="">
+    <img class="${light?'on-dark':''}" src="assets/mark-navy.png" alt="">
     <div>
       <div class="brand-name" style="color:${light?'#F3EEE2':'var(--ink)'}">Abu Huraira</div>
       <div class="brand-sub">CENTER</div>
