@@ -9,7 +9,7 @@
 <meta property="og:description" content="Interactive design preview of the AHC mobile app. Prepared by Buraaqtech.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#12213B; --navy-lo:#1B3357; --navy-hi:#0A1424;
@@ -203,8 +203,9 @@
   .foot strong{color:var(--navy)}
   .foot p{font-size:13px;color:var(--muted);line-height:1.6;margin:4px 0}
 
-  .ar{font-family:'Amiri',serif;direction:rtl;font-size:19px;color:var(--navy);
-    line-height:2;margin:0 0 8px}
+  .ar{font-family:'Amiri Quran',serif;direction:rtl;font-size:23px;
+    color:var(--navy);line-height:2.15;margin:0 0 10px;text-align:center;
+    text-shadow:0 1px 0 rgba(255,255,255,.6)}
 
   @media (max-width:900px){
     .page-head h1{font-size:24px}
@@ -528,14 +529,14 @@ function Home(){
       </div>
       ${(()=>{ const r=reflectionOfDay(); return `
       <div class="sec"><div class="sec-t">Reflection of the Day</div><div class="sec-r"></div></div>
-      <div class="live" style="align-items:flex-start">
-        ${svg(I.spark,19,'#B9812E',1.6)}
-        <div>
-          <div class="badge" style="margin-bottom:8px">${r.type}</div>
-          <p class="ar" dir="rtl" lang="ar">${r.ar}</p>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:16.5px;font-style:italic;color:var(--navy);line-height:1.5;margin:0 0 6px">&ldquo;${r.en}&rdquo;</p>
-          <p style="margin:0">${r.source} &middot; switches to live coverage automatically during a khutbah or class</p>
+      <div class="live" style="flex-direction:column;align-items:center;text-align:center">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:14px">
+          ${svg(I.spark,16,'#B9812E',1.6)}
+          <div class="badge" style="margin:0">${r.type}</div>
         </div>
+        <p class="ar" dir="rtl" lang="ar">${r.ar}</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:16.5px;font-style:italic;color:var(--navy);line-height:1.5;margin:0 0 8px">&ldquo;${r.en}&rdquo;</p>
+        <p style="margin:0">${r.source} &middot; switches to live coverage automatically during a khutbah or class</p>
       </div>`; })()}
     </div>
   </div>${tabbar('Home')}`;
