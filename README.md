@@ -1,47 +1,71 @@
-# AHC App — Design Preview Site
+# AHC App
 
-A standalone, self-contained preview of the five app screens. No build
-step, no dependencies, no third-party branding. Upload and it works.
+The five-screen design (Home, Prayer Times, Donate, Events,
+Notifications) as a plain web app in `www/`, wrapped with
+[Capacitor](https://capacitorjs.com) into real native Android and iOS
+app projects so it can be built and submitted to the Play Store / App
+Store.
 
 ```
-index.html          the whole site
-assets/
-  mark-light.png    logo for dark backgrounds
-  mark-navy.png     logo for light backgrounds
+www/                 the actual app - HTML/CSS/JS, no build step
+  index.html
+  assets/
+    mark-light.png   logo for dark backgrounds
+    mark-navy.png    logo for light backgrounds
+android/             native Android Studio project (Capacitor-generated)
+ios/                 native Xcode project (Capacitor-generated)
+resources/           source icon.png / splash.png used to generate all
+                     app icon & splash sizes (via `npx capacitor-assets generate`)
+capacitor.config.json
 ```
 
-The only external request is to Google Fonts. Everything else is local.
+The only external request `www/index.html` makes is to Google Fonts.
+Everything else is local; the native shells add no backend of their own.
 
 ---
 
-## Deploying it
+## Building the native apps
 
-### Option 1 — Netlify Drop (fastest, ~2 minutes)
+**Android** (works on Windows/Mac/Linux):
+1. Install [Android Studio](https://developer.android.com/studio).
+2. Open the `android/` folder as a project.
+3. Let it sync (downloads the Android Gradle Plugin/SDK - this needs
+   normal internet access to Google's servers, which this dev sandbox
+   didn't have, so it was never build-tested here).
+4. Run on an emulator or a plugged-in phone via the ▶ button, or
+   **Build → Generate Signed Bundle/APK** for a Play Store upload.
+5. Play Store submission needs a [Google Play Console](https://play.google.com/console) account ($25 one-time, your own).
 
-1. Go to https://app.netlify.com/drop
-2. Drag this whole folder onto the page.
-3. You get a live URL immediately, e.g. `random-name.netlify.app`.
-4. To use your own domain: Site settings → Domain management → add
-   something like `ahc.buraaqtech.com`, then add the CNAME record it
-   shows you at your DNS provider.
+**iOS** (needs a Mac):
+1. Install Xcode from the Mac App Store.
+2. Open `ios/App/App.xcworkspace` (not the `.xcodeproj`).
+3. Set your Team under **Signing & Capabilities** (needs your own
+   [Apple Developer](https://developer.apple.com/programs/) account,
+   $99/yr).
+4. Run on the simulator or a plugged-in iPhone via ▶, or
+   **Product → Archive** to upload to App Store Connect via TestFlight.
 
-Free, HTTPS included.
-
-### Option 2 — Your existing hosting
-
-If buraaqtech.com is on cPanel or similar shared hosting, just upload
-the folder via FTP or File Manager into a subfolder:
-
+**After editing anything in `www/`**, re-sync both native projects
+before rebuilding:
 ```
-public_html/ahc-preview/
+npx cap sync
 ```
 
-Then send `https://buraaqtech.com/ahc-preview/`.
+**Regenerating icons/splash** after changing `resources/icon.png` or
+`resources/splash.png`:
+```
+npx capacitor-assets generate
+```
 
-### Option 3 — Vercel or Cloudflare Pages
+---
 
-Both work the same way as Netlify. Drop the folder or point them at a
-Git repo. Free tier is more than enough.
+## Deploying the web preview (unchanged)
+
+The `www/` folder is still a normal static site — Netlify is already
+linked to this repo/branch (see `netlify.toml`) and auto-deploys to
+`ahc-app-preview.netlify.app` on every push. To deploy it anywhere else
+(Vercel, Cloudflare Pages, plain hosting), just publish the `www/`
+folder the same way.
 
 ---
 
@@ -59,12 +83,14 @@ Git repo. Free tier is more than enough.
 
 ## A note on what this is
 
-This is a **design preview**, not the app. Nothing here connects to a
-backend — the prayer times, events and amounts are sample content so
-Mohamed can see the layout and flow. The real app code lives separately.
-
-If he asks "can I install this?", the answer is not yet: this is for
-approving the look and feel before development builds it for real.
+The UI is real and this now builds into real installable apps, but
+there is still **no backend**. Prayer times are calculated client-side
+(see below), and events/donation amounts/notifications are static or
+client-only state — nothing persists across sessions, no payments
+actually process, and no push notifications actually fire yet. Those
+each need their own service (a small API/database, a payment
+processor, Firebase Cloud Messaging or similar) before this is
+production-ready, not just a store submission.
 
 ---
 
