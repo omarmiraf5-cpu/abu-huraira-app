@@ -13,10 +13,12 @@
 <style>
   :root{
     /* Silver Plaque: the real logo's own colors, extended - polished
-       silver/platinum calligraphy on deep navy. Monochrome metal, no
-       separate gold or green accent. */
+       silver/platinum calligraphy on deep navy. Monochrome metal
+       everywhere, except the scripture text itself: Ayah/Hadith
+       Arabic keeps gold, as the one deliberate warm exception. */
     --navy:#14293F; --navy-lo:#1F3F5E; --navy-hi:#0A1826;
     --metal:#E2E1E6; --metal-dk:#A9AEB8; --metal-lt:#F3F3F5; --metal-md:#CBCFD5;
+    --scripture:#D9A441;
     --cream:#17304A; --ivory:#1D3854; --tint:rgba(226,225,230,.14);
     --ink:#E7EAF0; --muted:#9BA8BC; --faint:#6E7C92;
     --line:rgba(255,255,255,.10);
@@ -208,7 +210,7 @@
   .foot p{font-size:13px;color:var(--muted);line-height:1.6;margin:4px 0}
 
   .ar{font-family:'Amiri Quran',serif;direction:rtl;font-size:24px;
-    color:var(--metal-lt);line-height:2.15;margin:0 0 10px;text-align:center}
+    color:var(--scripture);line-height:2.15;margin:0 0 10px;text-align:center}
 
   @media (max-width:900px){
     .page-head h1{font-size:24px}
