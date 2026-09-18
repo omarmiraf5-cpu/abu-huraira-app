@@ -12,16 +12,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Lateef:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Gunmetal: a cooler, more industrial cut of the same metal -
-       brushed steel and cool white, like a fine watch case. Gold
-       stays only on the scripture text, as a deliberate exception. */
-    --navy:#0A0E14; --navy-lo:#242B38; --navy-hi:#0A0E14;
-    --metal:#9BA5B5; --metal-dk:#5C6675; --metal-lt:#EDF1F7; --metal-md:#8B96A8;
-    --scripture:#D9A441;
-    --cream:#14181F; --ivory:#242B38; --tint:rgba(155,165,181,.14);
-    --ink:#EDF1F7; --muted:#8B96A8; --faint:#5C6675;
-    --line:rgba(255,255,255,.10);
-    --paper:#080B10;
+    /* Marble & Ink: a dark ink hero over light marble cards - the
+       first theme here with two polarities instead of one. Anything
+       tied to --ink/--muted/--faint/--line now assumes a LIGHT
+       surface (cards, page chrome); the hero and tab bar stay dark
+       and get their light-on-dark colors hardcoded rather than
+       shared, since they no longer match the card polarity. */
+    --navy:#16181C; --navy-lo:#22252B; --navy-hi:#0F1013;
+    --metal:#9C7A3C; --metal-dk:#7A5F2E; --metal-lt:#C9A968; --metal-md:#9C7A3C;
+    --scripture:#8B6A2E;
+    --cream:#EDEBE6; --ivory:#F7F6F3; --tint:rgba(156,122,60,.12);
+    --ink:#16181C; --muted:#6B6E73; --faint:#9AA0A8;
+    --line:rgba(22,24,28,.10);
+    --paper:#E5E2DC;
   }
   *{box-sizing:border-box}
   body{
@@ -47,7 +50,7 @@
     letter-spacing:.26em;margin-top:1px}
   .page-head h1{font-size:30px;font-weight:600;margin-bottom:8px}
   .page-head p{margin:0 auto;max-width:520px;font-size:14px;line-height:1.6;
-    color:#B7C0CC}
+    color:#B8B0A2}
   .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.2em;
     text-transform:uppercase;color:var(--metal);margin-bottom:10px}
 
@@ -57,7 +60,7 @@
   .rail{display:flex;gap:30px;overflow-x:auto;padding:6px 4px 26px;
     scroll-snap-type:x proximity}
   .rail::-webkit-scrollbar{height:8px}
-  .rail::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:4px}
+  .rail::-webkit-scrollbar-thumb{background:rgba(22,24,28,.22);border-radius:4px}
   .slot{flex:0 0 auto;scroll-snap-align:center;text-align:center}
   .slot-label{font-size:11.5px;font-weight:700;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);margin-bottom:12px}
@@ -83,19 +86,19 @@
   .hero .brandline{justify-content:flex-start;margin-bottom:18px}
   .hero .brandline img{width:38px;height:38px}
   .hero-greet{font-size:24px;font-weight:600;text-align:center;margin-bottom:22px}
-  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(155,165,181,.28);
+  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(156,122,60,.28);
     border-radius:20px;padding:20px 22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
   .lbl-gold{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--metal);font-weight:700}
   .prayer-name{font-family:'Cormorant Garamond',serif;font-size:36px;
     font-weight:600;margin-top:4px;line-height:1}
-  .prayer-sub{font-size:15px;color:#B7C0CC;margin-top:6px}
+  .prayer-sub{font-size:15px;color:#B8B0A2;margin-top:6px}
 
   .body-pad{padding:26px 20px 0}
   .sec{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .sec-t{font-size:12px;font-weight:700;letter-spacing:.1em;
     text-transform:uppercase;color:var(--muted)}
-  .sec-r{flex:1;height:1px;background:rgba(255,255,255,.14)}
+  .sec-r{flex:1;height:1px;background:rgba(22,24,28,.12)}
 
   /* ---------- quick access ---------- */
   .qa{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px}
@@ -104,7 +107,7 @@
   .tile:active{transform:scale(.97)}
   .tile span{font-size:12.5px;font-weight:600;line-height:1.15}
   .tile.navy{background:linear-gradient(155deg,var(--navy-lo),var(--navy-hi));
-    border:1px solid rgba(155,165,181,.3);
+    border:1px solid rgba(156,122,60,.3);
     box-shadow:0 6px 14px rgba(0,0,0,.28);color:#F3EEE2}
   .tile.accent{background:linear-gradient(155deg,var(--metal-lt),var(--metal-md));
     box-shadow:0 6px 14px rgba(180,130,40,.24);color:var(--navy)}
@@ -112,13 +115,13 @@
     box-shadow:0 4px 12px rgba(0,0,0,.18);color:var(--ink)}
 
   .live{background:var(--ivory);border-radius:18px;padding:19px;display:flex;
-    gap:13px;align-items:flex-start;border:1px dashed rgba(255,255,255,.20)}
+    gap:13px;align-items:flex-start;border:1px dashed rgba(22,24,28,.18)}
   .live p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
 
   /* ---------- cards ---------- */
   .card{background:var(--ivory);border:1px solid var(--line);
     box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14),
-      inset 0 1px 0 rgba(255,255,255,.06)}
+      inset 0 1px 0 rgba(255,255,255,.55)}
   .page-t{font-size:25px;font-weight:600;color:var(--ink)}
   .lbl-dk{font-size:11px;font-weight:700;letter-spacing:.18em;
     text-transform:uppercase;color:var(--metal-md)}
@@ -126,7 +129,7 @@
   .prow{display:flex;justify-content:space-between;align-items:center;
     padding:16px 18px;border-bottom:1px solid var(--line)}
   .prow:last-child{border-bottom:none}
-  .prow.on{background:linear-gradient(135deg,rgba(237,241,247,.16),rgba(155,165,181,.10))}
+  .prow.on{background:linear-gradient(135deg,rgba(201,169,104,.22),rgba(156,122,60,.10))}
   .pname{font-size:15.5px;font-weight:500;color:var(--muted)}
   .prow.on .pname{font-weight:700;color:var(--metal-lt)}
   .ptime{font-size:14px;color:var(--ink);text-align:right}
@@ -141,7 +144,7 @@
 
   /* ---------- chips / donate ---------- */
   .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:600;
-    border:1px solid rgba(255,255,255,.16);background:var(--ivory);color:var(--ink)}
+    border:1px solid rgba(22,24,28,.14);background:var(--ivory);color:var(--ink)}
   .chip.on{border:none;color:var(--navy);font-weight:700;
     background:linear-gradient(135deg,var(--metal-lt),var(--metal) 55%,var(--metal-dk));
     box-shadow:0 4px 12px rgba(201,138,46,.35)}
@@ -153,7 +156,7 @@
   .pay.apple{background:#000;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.18)}
   .pay.google{background:#fff;color:#3C4043;border:1px solid #DADCE0;
     box-shadow:0 3px 10px rgba(18,33,59,.06)}
-  .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(255,255,255,.32);
+  .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(22,24,28,.28);
     flex-shrink:0;display:flex;align-items:center;justify-content:center}
   .box.on{border:none;background:linear-gradient(135deg,var(--metal-lt),var(--metal-md))}
 
@@ -162,7 +165,7 @@
     padding:20px;margin-bottom:16px;
     box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14)}
   .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--metal-md);background:rgba(155,165,181,.18);
+    text-transform:uppercase;color:var(--metal-md);background:rgba(156,122,60,.18);
     padding:4px 10px;border-radius:7px;margin-bottom:12px}
   .etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
     color:var(--ink);margin-bottom:4px}
@@ -182,7 +185,7 @@
   .urgent{font-size:9.5px;font-weight:700;letter-spacing:.03em;
     text-transform:uppercase;color:#fff;background:#A8324B;padding:3px 8px;
     border-radius:6px;margin-left:8px}
-  .sw{width:46px;height:27px;border-radius:14px;background:rgba(255,255,255,.16);border:none;
+  .sw{width:46px;height:27px;border-radius:14px;background:rgba(22,24,28,.14);border:none;
     padding:3px;display:flex;align-items:center;justify-content:flex-start;
     flex-shrink:0;transition:background .16s ease}
   .sw.on{justify-content:flex-end;
@@ -199,11 +202,11 @@
     align-items:center;padding:8px 6px;z-index:30}
   .tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:58px;
     padding:7px 0;border-radius:16px;background:none;border:none}
-  .tab span{font-size:10.5px;font-weight:500;color:var(--muted)}
-  .tab.on{background:linear-gradient(135deg,rgba(237,241,247,.20),rgba(155,165,181,.14))}
+  .tab span{font-size:10.5px;font-weight:500;color:#9A9284}
+  .tab.on{background:linear-gradient(135deg,rgba(201,169,104,.24),rgba(156,122,60,.14))}
   .tab.on span{font-weight:700;color:var(--metal-lt)}
 
-  .foot{text-align:center;padding:30px 20px 0;border-top:1px solid rgba(255,255,255,.14);
+  .foot{text-align:center;padding:30px 20px 0;border-top:1px solid rgba(22,24,28,.12);
     margin-top:10px}
   .foot strong{color:var(--metal)}
   .foot p{font-size:13px;color:var(--muted);line-height:1.6;margin:4px 0}
@@ -273,7 +276,7 @@ const brand=(light)=>`
   <div class="brandline">
     <img src="assets/mark-${light?'light':'navy'}.png" alt="">
     <div>
-      <div class="brand-name" style="color:#F3EEE2">Abu Huraira</div>
+      <div class="brand-name" style="color:${light?'#F3EEE2':'var(--ink)'}">Abu Huraira</div>
       <div class="brand-sub">CENTER</div>
     </div>
   </div>`;
@@ -281,7 +284,7 @@ const tabbar=(active)=>`
   <div class="tabs">${TABS.map(t=>{
     const on=t.k===active;
     return `<button class="tab ${on?'on':''}" data-go="${t.k}">
-      ${svg(t.i,21,on?'#9BA5B5':'#8B96A8',on?1.9:1.6)}<span>${t.l}</span></button>`;
+      ${svg(t.i,21,on?'#C9A968':'#9A9284',on?1.9:1.6)}<span>${t.l}</span></button>`;
   }).join('')}</div>`;
 
 /* ============================ live prayer times ============================ */
@@ -526,16 +529,16 @@ function Home(){
     <div class="body-pad">
       <div class="sec"><div class="sec-t">Quick Access</div><div class="sec-r"></div></div>
       <div class="qa">
-        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#9BA5B5')}<span>Prayer Times</span></a>
-        <a class="tile accent" data-go="Donate">${svg(I.heart,18,'#0A0E14')}<span>Donate</span></a>
-        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#EDF1F7')}<span>Events</span></a>
-        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#EDF1F7')}<span>Alerts</span></a>
+        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#9C7A3C')}<span>Prayer Times</span></a>
+        <a class="tile accent" data-go="Donate">${svg(I.heart,18,'#16181C')}<span>Donate</span></a>
+        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#9C7A3C')}<span>Events</span></a>
+        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#9C7A3C')}<span>Alerts</span></a>
       </div>
       ${(()=>{ const r=reflectionOfDay(); return `
       <div class="sec"><div class="sec-t">Reflection of the Day</div><div class="sec-r"></div></div>
       <div class="live" style="flex-direction:column;align-items:center;text-align:center">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:14px">
-          ${svg(I.spark,16,'#9BA5B5',1.6)}
+          ${svg(I.spark,16,'#9C7A3C',1.6)}
           <div class="badge" style="margin:0">${r.type}</div>
         </div>
         <p class="ar" dir="rtl" lang="ar">${r.ar}</p>
@@ -568,8 +571,8 @@ function Prayer(){
           </div>`).join('')}
       </div>
       <div style="display:flex;gap:12px">
-        <div class="mini">${svg(I.compass,20,'#9BA5B5',1.6)}<span>Qibla Compass</span></div>
-        <div class="mini">${svg(I.cal,20,'#9BA5B5',1.6)}<span>Hijri Calendar</span></div>
+        <div class="mini">${svg(I.compass,20,'#9C7A3C',1.6)}<span>Qibla Compass</span></div>
+        <div class="mini">${svg(I.cal,20,'#9C7A3C',1.6)}<span>Hijri Calendar</span></div>
       </div>
     </div>
   </div>${tabbar('Prayer Times')}`;
@@ -582,17 +585,17 @@ const st={cat:CATS[0],amt:25,rec:false,
   notif:{}};
 function Donate(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(true)}
+    ${brand(false)}
     <div class="lbl-dk">Sadaqah &amp; Support</div>
     <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
     <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
-      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#9BA5B5 60%)"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9BA5B5"/></svg>
-      <div style="width:34px;height:1px;background:#9BA5B5"></div>
-      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9BA5B5"/></svg>
-      <div style="width:34px;height:1px;background:#9BA5B5"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9BA5B5"/></svg>
-      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#9BA5B5 60%)"></div>
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#9C7A3C 60%)"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9C7A3C"/></svg>
+      <div style="width:34px;height:1px;background:#9C7A3C"></div>
+      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9C7A3C"/></svg>
+      <div style="width:34px;height:1px;background:#9C7A3C"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#9C7A3C"/></svg>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#9C7A3C 60%)"></div>
     </div>
     <div class="card" style="border-radius:22px;padding:22px 20px;margin-bottom:22px">
       <div class="cap">Category</div>
@@ -604,7 +607,7 @@ function Donate(){
         ${AMTS.map(a=>`<button class="chip ${st.amt===a?'on':''}" data-amt="${a}">$${a}</button>`).join('')}
       </div>
       <button data-rec style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px 2px;width:100%">
-        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#0A0E14',2.2):''}</div>
+        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#16181C',2.2):''}</div>
         <div style="font-size:14px;color:var(--ink)">Make this a recurring monthly gift</div>
       </button>
     </div>
@@ -616,7 +619,7 @@ function Donate(){
       Pay with Google Pay</button>
     <button style="width:100%;background:none;border:none;color:var(--muted);font-size:13.5px;text-decoration:underline;padding:4px">Use a card instead</button>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px">
-      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9BA5B5"/></svg>
+      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#9C7A3C"/></svg>
       <div style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6">
         ${st.rec?'Recurring':'One-time'} · ${st.cat} · $${st.amt}</div>
     </div>
@@ -632,7 +635,7 @@ const EVENTS=[
 ];
 function Events(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(true)}
+    ${brand(false)}
     <div class="lbl-dk">This Week</div>
     <h1 class="page-t" style="margin:10px 0 22px">Events &amp; Classes</h1>
     ${EVENTS.map(([id,type,title,sched])=>`
@@ -644,7 +647,7 @@ function Events(){
           ${st.rsvp[id]?"✓ You're going":'RSVP'}</button>
       </div>`).join('')}
     <div style="display:flex;align-items:center;gap:8px;margin-top:22px">
-      ${svg(I.clock,15,'#9BA5B5',1.8)}
+      ${svg(I.clock,15,'#9C7A3C',1.8)}
       <div style="font-size:12.5px;color:var(--muted);line-height:1.5">
         RSVPing here drives the morning-of reminder for anyone attending.</div>
     </div>
@@ -664,7 +667,7 @@ const NOTIF=[
 NOTIF.forEach(([k])=>{ if(st.notif[k]===undefined) st.notif[k]=true; });
 function Notifications(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(true)}
+    ${brand(false)}
     <div class="lbl-dk">Stay Informed</div>
     <h1 class="page-t" style="margin:10px 0 10px">Notifications</h1>
     <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:22px">
