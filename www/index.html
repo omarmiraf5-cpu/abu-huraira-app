@@ -16,20 +16,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Lateef:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Marble & Ink: a dark ink hero over light marble cards - the
-       first theme here with two polarities instead of one. Anything
-       tied to --ink/--muted/--faint/--line now assumes a LIGHT
-       surface (cards, page chrome); the hero and tab bar stay dark
-       and get their light-on-dark colors hardcoded rather than
-       shared, since they no longer match the card polarity. */
+    /* Deep Navy: matches the real abuhuraira.org site - dark navy
+       throughout (hero, cards, tab bar all one polarity again), gold
+       for labels/accents/active states, maroon reserved for Donate. */
     --navy:#16181C; --navy-lo:#22252B; --navy-hi:#0F1013;
     --metal:#9C7A3C; --metal-dk:#7A5F2E; --metal-lt:#C9A968; --metal-md:#9C7A3C;
-    --scripture:#8B6A2E;
+    --scripture:#C9A968;
     /* Maroon: a Donate-only accent, kept off every other screen */
     --maroon:#7A1B2E; --maroon-lt:#9C2E44; --maroon-dk:#54121F;
-    --cream:#EDEBE6; --ivory:#F7F6F3; --tint:rgba(156,122,60,.12);
-    --ink:#16181C; --muted:#6B6E73; --faint:#9AA0A8;
-    --line:rgba(22,24,28,.10);
+    --cream:#14161B; --ivory:#1D2027; --tint:rgba(156,122,60,.14);
+    --ink:#F3EEE2; --muted:#A6A196; --faint:#7D7A72;
+    --line:rgba(255,255,255,.10);
     --paper:#E5E2DC;
   }
   *{box-sizing:border-box}
@@ -108,7 +105,7 @@
   .sec{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .sec-t{font-size:12px;font-weight:700;letter-spacing:.1em;
     text-transform:uppercase;color:var(--muted)}
-  .sec-r{flex:1;height:1px;background:rgba(22,24,28,.12)}
+  .sec-r{flex:1;height:1px;background:rgba(255,255,255,.12)}
 
   /* ---------- quick access ---------- */
   .qa{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px}
@@ -125,13 +122,13 @@
     box-shadow:0 4px 12px rgba(0,0,0,.18);color:var(--ink)}
 
   .live{background:var(--ivory);border-radius:18px;padding:19px;display:flex;
-    gap:13px;align-items:flex-start;border:1px dashed rgba(22,24,28,.18)}
+    gap:13px;align-items:flex-start;border:1px dashed rgba(255,255,255,.18)}
   .live p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
 
   /* ---------- cards ---------- */
   .card{background:var(--ivory);border:1px solid var(--line);
-    box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14),
-      inset 0 1px 0 rgba(255,255,255,.55)}
+    box-shadow:0 16px 34px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.22),
+      inset 0 1px 0 rgba(255,255,255,.06)}
   .page-t{font-size:25px;font-weight:600;color:var(--ink)}
   .lbl-dk{font-size:11px;font-weight:700;letter-spacing:.18em;
     text-transform:uppercase;color:var(--metal-md)}
@@ -154,7 +151,7 @@
 
   /* ---------- chips / donate ---------- */
   .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:600;
-    border:1px solid rgba(22,24,28,.14);background:var(--ivory);color:var(--ink)}
+    border:1px solid rgba(255,255,255,.16);background:var(--ivory);color:var(--ink)}
   .chip.on{border:none;color:#F3EEE2;font-weight:700;
     background:linear-gradient(135deg,var(--maroon-lt),var(--maroon) 55%,var(--maroon-dk));
     box-shadow:0 4px 12px rgba(122,27,46,.35)}
@@ -166,7 +163,7 @@
   .pay.apple{background:#000;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.18)}
   .pay.google{background:#fff;color:#3C4043;border:1px solid #DADCE0;
     box-shadow:0 3px 10px rgba(18,33,59,.06)}
-  .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(22,24,28,.28);
+  .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(255,255,255,.30);
     flex-shrink:0;display:flex;align-items:center;justify-content:center}
   .box.on{border:none;background:linear-gradient(135deg,var(--maroon-lt),var(--maroon))}
 
@@ -195,7 +192,7 @@
   .urgent{font-size:9.5px;font-weight:700;letter-spacing:.03em;
     text-transform:uppercase;color:#fff;background:#A8324B;padding:3px 8px;
     border-radius:6px;margin-left:8px}
-  .sw{width:46px;height:27px;border-radius:14px;background:rgba(22,24,28,.14);border:none;
+  .sw{width:46px;height:27px;border-radius:14px;background:rgba(255,255,255,.16);border:none;
     padding:3px;display:flex;align-items:center;justify-content:flex-start;
     flex-shrink:0;transition:background .16s ease}
   .sw.on{justify-content:flex-end;
@@ -596,7 +593,7 @@ const st={cat:CATS[0],amt:25,rec:false,
   notif:{}};
 function Donate(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(false)}
+    ${brand(true)}
     <div class="lbl-dk">Sadaqah &amp; Support</div>
     <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
     <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
@@ -646,7 +643,7 @@ const EVENTS=[
 ];
 function Events(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(false)}
+    ${brand(true)}
     <div class="lbl-dk">This Week</div>
     <h1 class="page-t" style="margin:10px 0 22px">Events &amp; Classes</h1>
     ${EVENTS.map(([id,type,title,sched])=>`
@@ -678,7 +675,7 @@ const NOTIF=[
 NOTIF.forEach(([k])=>{ if(st.notif[k]===undefined) st.notif[k]=true; });
 function Notifications(){
   return `<div class="scroll" style="padding:30px 20px 100px">
-    ${brand(false)}
+    ${brand(true)}
     <div class="lbl-dk">Stay Informed</div>
     <h1 class="page-t" style="margin:10px 0 10px">Notifications</h1>
     <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:22px">
