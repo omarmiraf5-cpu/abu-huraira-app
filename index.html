@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abu Huraira Center — App Design Preview</title>
+<meta name="description" content="Mobile app design preview for Abu Huraira Center. Prepared by Buraaqtech.">
+<meta property="og:title" content="Abu Huraira Center — App Design Preview">
+<meta property="og:description" content="Interactive design preview of the AHC mobile app. Prepared by Buraaqtech.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12213B; --navy-lo:#1B3357; --navy-hi:#0A1424;
+    --gold:#D9A441; --gold-dk:#B9812E; --gold-lt:#F0CE8C; --gold-md:#C98A2E;
+    --cream:#EFE9DC; --ivory:#FCFAF5; --tint:#F5EAD0;
+    --ink:#1B211C; --muted:#7A7466; --faint:#A29B8B;
+    --line:rgba(18,33,59,.07);
+    --paper:#F3EFE6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Work Sans',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;margin:0}
+  a{text-decoration:none;color:inherit}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ---------- page chrome ---------- */
+  .page-head{
+    background:linear-gradient(165deg,var(--navy-lo),var(--navy-hi) 70%);
+    color:#F3EEE2; padding:38px 24px 34px; text-align:center;
+  }
+  .brandline{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px}
+  .brandline img{width:44px;height:44px;object-fit:contain;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,.45))}
+  .brand-name{font-family:'Aladin',serif;font-size:21px;line-height:1.05;
+    text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .brand-sub{font-family:'Aladin',serif;font-size:10.5px;color:var(--gold);
+    letter-spacing:.26em;margin-top:1px}
+  .page-head h1{font-size:30px;font-weight:600;margin-bottom:8px}
+  .page-head p{margin:0 auto;max-width:520px;font-size:14px;line-height:1.6;
+    color:#B9C2D4}
+  .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+
+  .wrap{max-width:1500px;margin:0 auto;padding:36px 20px 60px}
+  .hint{text-align:center;font-size:13px;color:var(--muted);margin-bottom:28px}
+
+  .rail{display:flex;gap:30px;overflow-x:auto;padding:6px 4px 26px;
+    scroll-snap-type:x proximity}
+  .rail::-webkit-scrollbar{height:8px}
+  .rail::-webkit-scrollbar-thumb{background:#d6d0c2;border-radius:4px}
+  .slot{flex:0 0 auto;scroll-snap-align:center;text-align:center}
+  .slot-label{font-size:11.5px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+
+  /* ---------- phone frame ---------- */
+  .phone{
+    width:390px;height:844px;border-radius:44px;background:#0d0d0f;
+    padding:11px;box-shadow:0 30px 60px rgba(10,20,36,.28),
+      0 8px 18px rgba(10,20,36,.16);position:relative
+  }
+  .notch{position:absolute;top:20px;left:50%;transform:translateX(-50%);
+    width:104px;height:26px;background:#0d0d0f;border-radius:14px;z-index:40}
+  .screen{width:100%;height:100%;border-radius:34px;overflow:hidden;
+    background:var(--cream);position:relative;display:flex;flex-direction:column}
+  .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .scroll::-webkit-scrollbar{width:0}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;
+    background:linear-gradient(165deg,var(--navy-lo) 0,#16294A 45%,var(--navy-hi) 100%);
+    border-radius:0 0 34px 34px;box-shadow:0 20px 40px rgba(10,20,36,.25);
+    padding:44px 22px 36px;color:#F3EEE2}
+  .hero .brandline{justify-content:flex-start;margin-bottom:18px}
+  .hero .brandline img{width:38px;height:38px}
+  .hero-greet{font-size:24px;font-weight:600;text-align:center;margin-bottom:22px}
+  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(217,164,65,.28);
+    border-radius:20px;padding:20px 22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+  .lbl-gold{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--gold);font-weight:700}
+  .prayer-name{font-family:'Cormorant Garamond',serif;font-size:36px;
+    font-weight:600;margin-top:4px;line-height:1}
+  .prayer-sub{font-size:15px;color:#B9C2D4;margin-top:6px}
+
+  .body-pad{padding:26px 20px 0}
+  .sec{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .sec-t{font-size:12px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted)}
+  .sec-r{flex:1;height:1px;background:rgba(18,33,59,.1)}
+
+  /* ---------- quick access ---------- */
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px}
+  .tile{height:52px;border-radius:13px;padding:0 13px;display:flex;
+    align-items:center;gap:10px;transition:transform .12s ease}
+  .tile:active{transform:scale(.97)}
+  .tile span{font-size:12.5px;font-weight:600;line-height:1.15}
+  .tile.navy{background:linear-gradient(155deg,var(--navy-lo),var(--navy-hi));
+    box-shadow:0 6px 14px rgba(10,20,36,.18);color:#F3EEE2}
+  .tile.gold{background:linear-gradient(155deg,var(--gold-lt),var(--gold-md));
+    box-shadow:0 6px 14px rgba(180,130,40,.24);color:var(--navy)}
+  .tile.plain{background:var(--ivory);border:1px solid var(--line);
+    box-shadow:0 4px 12px rgba(10,20,36,.05);color:var(--navy)}
+
+  .live{background:var(--ivory);border-radius:18px;padding:19px;display:flex;
+    gap:13px;align-items:flex-start;border:1px dashed rgba(18,33,59,.15)}
+  .live p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+
+  /* ---------- cards ---------- */
+  .card{background:var(--ivory);border:1px solid var(--line);
+    box-shadow:0 16px 34px rgba(10,20,36,.10),0 2px 8px rgba(10,20,36,.05),
+      inset 0 1px 0 rgba(255,255,255,.7)}
+  .page-t{font-size:25px;font-weight:600;color:var(--navy)}
+  .lbl-dk{font-size:11px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--gold-dk)}
+
+  .prow{display:flex;justify-content:space-between;align-items:center;
+    padding:16px 18px;border-bottom:1px solid var(--line)}
+  .prow:last-child{border-bottom:none}
+  .prow.on{background:linear-gradient(135deg,#FBF3DF,var(--tint))}
+  .pname{font-size:15.5px;font-weight:500;color:var(--muted)}
+  .prow.on .pname{font-weight:700;color:var(--navy)}
+  .ptime{font-size:14px;color:var(--navy);text-align:right}
+  .piq{font-size:12px;color:var(--faint);margin-top:2px}
+  .prow.on .ptime{font-weight:700}
+  .prow.on .piq{color:#8A6A2A;font-weight:600}
+
+  .mini{flex:1;background:var(--ivory);border:1px solid var(--line);
+    border-radius:16px;padding:16px;display:flex;align-items:center;gap:10px;
+    box-shadow:0 10px 24px rgba(10,20,36,.07)}
+  .mini span{font-size:13px;font-weight:500;color:var(--navy)}
+
+  /* ---------- chips / donate ---------- */
+  .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:600;
+    border:1px solid rgba(18,33,59,.12);background:var(--ivory);color:var(--ink)}
+  .chip.on{border:none;color:var(--navy);font-weight:700;
+    background:linear-gradient(135deg,var(--gold-lt),var(--gold) 55%,var(--gold-dk));
+    box-shadow:0 4px 12px rgba(201,138,46,.35)}
+  .chiprow{display:flex;flex-wrap:wrap;gap:9px}
+  .cap{font-size:12px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .pay{width:100%;border:none;border-radius:14px;padding:15px;font-size:15.5px;
+    font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+  .pay.apple{background:#000;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+  .pay.google{background:#fff;color:#3C4043;border:1px solid #DADCE0;
+    box-shadow:0 3px 10px rgba(18,33,59,.06)}
+  .box{width:21px;height:21px;border-radius:6px;border:2px solid #C9C3B3;
+    flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .box.on{border:none;background:linear-gradient(135deg,var(--gold-lt),var(--gold-md))}
+
+  /* ---------- events ---------- */
+  .ecard{background:var(--ivory);border:1px solid var(--line);border-radius:20px;
+    padding:20px;margin-bottom:16px;
+    box-shadow:0 16px 34px rgba(10,20,36,.10),0 2px 8px rgba(10,20,36,.05)}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--gold-dk);background:var(--tint);
+    padding:4px 10px;border-radius:7px;margin-bottom:12px}
+  .etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
+    color:var(--navy);margin-bottom:4px}
+  .esched{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .rsvp{border:1px solid var(--navy);background:none;color:var(--navy);
+    border-radius:20px;padding:8px 17px;font-size:13px;font-weight:600}
+  .rsvp.on{border:none;color:var(--navy);font-weight:700;
+    background:linear-gradient(135deg,var(--gold-lt),var(--gold-md));
+    box-shadow:0 4px 12px rgba(201,138,46,.35)}
+
+  /* ---------- notifications ---------- */
+  .nrow{display:flex;justify-content:space-between;align-items:flex-start;
+    gap:14px;padding:16px 18px;border-bottom:1px solid var(--line)}
+  .nrow:last-child{border-bottom:none}
+  .nlabel{font-size:14.5px;font-weight:600;color:var(--navy)}
+  .ndesc{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .urgent{font-size:9.5px;font-weight:700;letter-spacing:.03em;
+    text-transform:uppercase;color:#fff;background:#7A2331;padding:3px 8px;
+    border-radius:6px;margin-left:8px}
+  .sw{width:46px;height:27px;border-radius:14px;background:#E3DFD3;border:none;
+    padding:3px;display:flex;align-items:center;justify-content:flex-start;
+    flex-shrink:0;transition:background .16s ease}
+  .sw.on{justify-content:flex-end;
+    background:linear-gradient(135deg,var(--gold-lt),var(--gold-md));
+    box-shadow:0 3px 8px rgba(201,138,46,.3)}
+  .knob{width:21px;height:21px;border-radius:50%;background:#fff}
+
+  /* ---------- tab bar ---------- */
+  .tabs{position:absolute;left:16px;right:16px;bottom:16px;
+    background:rgba(252,250,245,.96);backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);border-radius:26px;
+    box-shadow:0 18px 40px rgba(10,20,36,.18),0 3px 10px rgba(10,20,36,.08);
+    border:1px solid rgba(255,255,255,.7);display:flex;justify-content:space-around;
+    align-items:center;padding:8px 6px;z-index:30}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:58px;
+    padding:7px 0;border-radius:16px;background:none;border:none}
+  .tab span{font-size:10.5px;font-weight:500;color:#9A9284}
+  .tab.on{background:linear-gradient(135deg,#FBF3DF,var(--tint))}
+  .tab.on span{font-weight:700;color:var(--gold-dk)}
+
+  .foot{text-align:center;padding:30px 20px 0;border-top:1px solid #ddd7c9;
+    margin-top:10px}
+  .foot strong{color:var(--navy)}
+  .foot p{font-size:13px;color:var(--muted);line-height:1.6;margin:4px 0}
+
+  @media (max-width:900px){
+    .page-head h1{font-size:24px}
+    .wrap{padding:24px 12px 40px}
+    .rail{gap:20px}
+  }
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <div class="brandline">
+    <img src="assets/mark-light.png" alt="Abu Huraira Center">
+    <div>
+      <div class="brand-name">Abu Huraira</div>
+      <div class="brand-sub">CENTER</div>
+    </div>
+  </div>
+  <div class="eyebrow">Mobile App — Design Preview</div>
+  <h1>Five Screens, Ready for Review</h1>
+  <p>Prayer times, giving, events and a notification system built for the
+     AHC community. Tap anything — the screens are interactive.</p>
+</header>
+
+<div class="wrap">
+  <p class="hint">Scroll sideways to see all five screens →</p>
+  <div class="rail" id="rail"></div>
+
+  <div class="foot">
+    <p><strong>Prepared by Buraaqtech</strong></p>
+    <p>Omar Abdullahi · Web design &amp; portal development</p>
+  </div>
+</div>
+
+<script>
+/* ============================ icon set ============================ */
+const I = {
+  mosque:`<path d="M3.5 20.5h16" stroke-linecap="round"/><path d="M5 20V12.8C5 9.2 7.2 7 9.3 7S13.6 9.2 13.6 12.8V20" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.7 20v-3.2a1.6 1.6 0 0 1 3.2 0V20" stroke-linecap="round"/><path d="M17.3 20V9.5" stroke-linecap="round"/><path d="M16 9.5a1.3 1.3 0 1 1 2.6 0" stroke-linecap="round"/><path d="M17.3 7.3V6" stroke-linecap="round"/><circle cx="17.3" cy="5.3" r=".9"/>`,
+  heart:`<path d="M12 20.5s-7.5-4.6-7.5-10A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3.5c0 5.4-7.5 10-7.5 10Z" stroke-linecap="round" stroke-linejoin="round"/>`,
+  cal:`<rect x="4" y="5.5" width="16" height="15" rx="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 10h16M8 3.5v3M16 3.5v3" stroke-linecap="round"/>`,
+  bell:`<path d="M6 9a6 6 0 1 1 12 0c0 4.2 1.3 5.6 1.8 6.4H4.2C4.7 14.6 6 13.2 6 9Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18a2.5 2.5 0 0 0 5 0" stroke-linecap="round"/>`,
+  home:`<path d="M4 11.5 12 4l8 7.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9.5h12V10" stroke-linecap="round" stroke-linejoin="round"/>`,
+  compass:`<circle cx="12" cy="12" r="9"/><path d="M12 12 15.5 9.5" stroke-linecap="round"/>`,
+  spark:`<circle cx="12" cy="12" r="3"/><path d="M12 5v1.5M12 17.5V19M5 12h1.5M17.5 12H19" stroke-linecap="round"/>`,
+  clock:`<circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  check:`<path d="M3 8.5 6.2 12 13 4" stroke-linecap="round" stroke-linejoin="round"/>`
+};
+const svg=(p,s=20,c='#12213B',w=1.5)=>
+  `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${w}" style="flex-shrink:0">${p}</svg>`;
+
+/* ============================ shared bits ============================ */
+const SCREENS=['Home','Prayer Times','Donate','Events','Notifications'];
+const TABS=[
+  {k:'Home',   i:I.home,   l:'Home'},
+  {k:'Prayer Times', i:I.mosque, l:'Prayer'},
+  {k:'Donate', i:I.heart,  l:'Donate'},
+  {k:'Events', i:I.cal,    l:'Events'},
+  {k:'Notifications', i:I.bell, l:'Alerts'}
+];
+const brand=(light)=>`
+  <div class="brandline">
+    <img src="assets/mark-${light?'light':'navy'}.png" alt="">
+    <div>
+      <div class="brand-name" style="color:${light?'#F3EEE2':'#12213B'}">Abu Huraira</div>
+      <div class="brand-sub">CENTER</div>
+    </div>
+  </div>`;
+const tabbar=(active)=>`
+  <div class="tabs">${TABS.map(t=>{
+    const on=t.k===active;
+    return `<button class="tab ${on?'on':''}" data-go="${t.k}">
+      ${svg(t.i,21,on?'#B9812E':'#9A9284',on?1.9:1.6)}<span>${t.l}</span></button>`;
+  }).join('')}</div>`;
+
+/* ============================ screens ============================ */
+function Home(){
+  return `<div class="scroll" style="padding-bottom:100px">
+    <div class="hero">
+      ${brand(true)}
+      <div class="hero-greet">Assalamu Alaikum</div>
+      <div class="glass">
+        <div class="lbl-gold">Next Prayer</div>
+        <div class="prayer-name">Asr</div>
+        <div class="prayer-sub">4:47 PM &nbsp;·&nbsp; in 1h 12m</div>
+      </div>
+    </div>
+    <div class="body-pad">
+      <div class="sec"><div class="sec-t">Quick Access</div><div class="sec-r"></div></div>
+      <div class="qa">
+        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#D9A441')}<span>Prayer Times</span></a>
+        <a class="tile gold" data-go="Donate">${svg(I.heart,18,'#12213B')}<span>Donate</span></a>
+        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#12213B')}<span>Events</span></a>
+        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#12213B')}<span>Alerts</span></a>
+      </div>
+      <div class="sec"><div class="sec-t">Live Now</div><div class="sec-r"></div></div>
+      <div class="live">${svg(I.spark,19,'#9A9284',1.6)}
+        <p>No active broadcast. This card lights up automatically when staff
+           starts a khutbah or class.</p></div>
+    </div>
+  </div>${tabbar('Home')}`;
+}
+
+const PRAYERS=[
+  ['Fajr','5:41 AM','6:01 AM'],['Sunrise','7:22 AM',null],
+  ['Dhuhr','1:12 PM','1:22 PM'],['Asr','4:47 PM','4:57 PM'],
+  ['Maghrib','7:58 PM','8:03 PM'],['Isha','9:22 PM','9:37 PM']
+];
+function Prayer(){
+  return `<div class="scroll" style="padding-bottom:90px">
+    <div class="hero" style="padding-bottom:30px">
+      ${brand(true)}
+      <div class="lbl-gold" style="letter-spacing:.18em">6 Rabi' al-Thānī 1448 AH</div>
+      <h1 style="font-size:24px;font-weight:600;color:#F3EEE2;margin:6px 0 20px">Prayer Times</h1>
+      <div class="lbl-gold">Next Prayer</div>
+      <div class="prayer-name" style="font-size:42px">Asr</div>
+      <div class="prayer-sub">4:47 PM &nbsp;·&nbsp; in 1h 12m</div>
+    </div>
+    <div style="padding:22px 20px">
+      <div class="card" style="border-radius:18px;overflow:hidden;margin-bottom:20px">
+        ${PRAYERS.map(([n,a,iq])=>`
+          <div class="prow ${n==='Asr'?'on':''}">
+            <div class="pname">${n}</div>
+            <div><div class="ptime">${iq?'Adhan ':''}${a}</div>
+              ${iq?`<div class="piq">Iqama ${iq}</div>`:''}</div>
+          </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:12px">
+        <div class="mini">${svg(I.compass,20,'#B9812E',1.6)}<span>Qibla Compass</span></div>
+        <div class="mini">${svg(I.cal,20,'#B9812E',1.6)}<span>Hijri Calendar</span></div>
+      </div>
+    </div>
+  </div>${tabbar('Prayer Times')}`;
+}
+
+const CATS=['Automated Friday Giving','Masjid Maintenance','Zakat Al-Maal','Sadaqah'];
+const AMTS=[10,25,50,100];
+const st={cat:CATS[0],amt:25,rec:false,
+  rsvp:{},
+  notif:{}};
+function Donate(){
+  return `<div class="scroll" style="padding:30px 20px 100px">
+    ${brand(false)}
+    <div class="lbl-dk">Sadaqah &amp; Support</div>
+    <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
+    <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#D9A441 60%)"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#D9A441"/></svg>
+      <div style="width:34px;height:1px;background:#D9A441"></div>
+      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#D9A441"/></svg>
+      <div style="width:34px;height:1px;background:#D9A441"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#D9A441"/></svg>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#D9A441 60%)"></div>
+    </div>
+    <div class="card" style="border-radius:22px;padding:22px 20px;margin-bottom:22px">
+      <div class="cap">Category</div>
+      <div class="chiprow" style="margin-bottom:22px">
+        ${CATS.map(c=>`<button class="chip ${st.cat===c?'on':''}" data-cat="${c}">${c}</button>`).join('')}
+      </div>
+      <div class="cap">Amount</div>
+      <div class="chiprow" style="margin-bottom:20px">
+        ${AMTS.map(a=>`<button class="chip ${st.amt===a?'on':''}" data-amt="${a}">$${a}</button>`).join('')}
+      </div>
+      <button data-rec style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px 2px;width:100%">
+        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#12213B',2.2):''}</div>
+        <div style="font-size:14px">Make this a recurring monthly gift</div>
+      </button>
+    </div>
+    <button class="pay apple" style="margin-bottom:10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16.5 6.5c.9-1.1 1.5-2.6 1.3-4.1-1.3.1-2.9.9-3.8 2-.8 1-1.6 2.6-1.3 4 1.4.1 2.9-.8 3.8-1.9ZM19.9 17.3c-.5 1.1-.8 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9-1.9 0-2.4.9-3.7.9-1.6 0-2.8-1.5-3.7-2.9C1.4 17 .8 13.2 2.3 10.8c1-1.6 2.6-2.6 4.1-2.6 1.5 0 2.5 1 3.7 1 1.2 0 2-.9 3.7-.9 1.4 0 2.9.8 3.9 2.1-3.4 1.9-2.9 6.7.2 6.9Z"/></svg>
+      Pay with Apple Pay</button>
+    <button class="pay google" style="margin-bottom:14px">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4c-.2 1.3-1 2.3-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4Z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6C4.7 19.9 8.1 22 12 22Z"/><path fill="#FBBC05" d="M6.4 13.9c-.2-.6-.3-1.2-.3-1.9s.1-1.3.3-1.9V7.5H3.1A10 10 0 0 0 2 12c0 1.6.4 3.1 1.1 4.5l3.3-2.6Z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.8-2.8C16.9 3 14.6 2 12 2 8.1 2 4.7 4.1 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6Z"/></svg>
+      Pay with Google Pay</button>
+    <button style="width:100%;background:none;border:none;color:var(--muted);font-size:13.5px;text-decoration:underline;padding:4px">Use a card instead</button>
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px">
+      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#D9A441"/></svg>
+      <div style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6">
+        ${st.rec?'Recurring':'One-time'} · ${st.cat} · $${st.amt}</div>
+    </div>
+    <div style="font-size:11.5px;color:var(--faint);text-align:center;margin-top:4px">
+      An automatic tax receipt is emailed immediately on completion.</div>
+  </div>${tabbar('Donate')}`;
+}
+
+const EVENTS=[
+  ['tafsir','Class','Tafsir: Surah Yusuf','Weekly · Sundays 7:00 PM'],
+  ['muslimah','Class','The Complete Muslimah','Weekly · Tuesdays 6:30 PM'],
+  ['salah','Class','Perfecting Your Salah','Weekly · Thursdays 7:00 PM']
+];
+function Events(){
+  return `<div class="scroll" style="padding:30px 20px 100px">
+    ${brand(false)}
+    <div class="lbl-dk">This Week</div>
+    <h1 class="page-t" style="margin:10px 0 22px">Events &amp; Classes</h1>
+    ${EVENTS.map(([id,type,title,sched])=>`
+      <div class="ecard">
+        <div class="badge">${type}</div>
+        <div class="etitle">${title}</div>
+        <div class="esched">${sched}</div>
+        <button class="rsvp ${st.rsvp[id]?'on':''}" data-rsvp="${id}">
+          ${st.rsvp[id]?"✓ You're going":'RSVP'}</button>
+      </div>`).join('')}
+    <div style="display:flex;align-items:center;gap:8px;margin-top:22px">
+      ${svg(I.clock,15,'#B9812E',1.8)}
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.5">
+        RSVPing here drives the morning-of reminder for anyone attending.</div>
+    </div>
+  </div>${tabbar('Events')}`;
+}
+
+const NOTIF=[
+  ['prayer','Prayer & Iqama Alerts','Shortly before each adhan, with a countdown after the call to prayer.',0],
+  ['khutbah','Khutbah Start Alert','Fires the moment Friday khutbah begins.',0],
+  ['lecture','Live Lecture / Class Alert','Sent when staff taps “Start Now” for an ongoing program.',0],
+  ['friday','Friday “Hour of Acceptance” Giving Reminder','Timed to fire as Asr ends, ahead of Maghrib.',0],
+  ['events','Event Reminders','Morning-of reminder for anyone who RSVP\'d.',0],
+  ['ramadan','Ramadan-Specific Alerts','Iftar time, taraweeh start, and suhoor cutoff.',0],
+  ['receipt','Instant Donation Receipt','Fires the moment a donation completes.',0],
+  ['emergency','Emergency / Urgent Announcements','Closures, weather, sudden schedule changes — kept on its own channel.',1]
+];
+NOTIF.forEach(([k])=>{ if(st.notif[k]===undefined) st.notif[k]=true; });
+function Notifications(){
+  return `<div class="scroll" style="padding:30px 20px 100px">
+    ${brand(false)}
+    <div class="lbl-dk">Stay Informed</div>
+    <h1 class="page-t" style="margin:10px 0 10px">Notifications</h1>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:22px">
+      Each notification below is its own switch — turning one off never affects the others.</div>
+    <div class="card" style="border-radius:20px;overflow:hidden">
+      ${NOTIF.map(([k,label,desc,urg])=>`
+        <div class="nrow">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;flex-wrap:wrap">
+              <div class="nlabel">${label}</div>
+              ${urg?'<div class="urgent">Separate channel</div>':''}
+            </div>
+            <div class="ndesc">${desc}</div>
+          </div>
+          <button class="sw ${st.notif[k]?'on':''}" data-notif="${k}"><div class="knob"></div></button>
+        </div>`).join('')}
+    </div>
+  </div>${tabbar('Notifications')}`;
+}
+
+const RENDER={'Home':Home,'Prayer Times':Prayer,'Donate':Donate,
+  'Events':Events,'Notifications':Notifications};
+
+/* ============================ mount ============================ */
+const rail=document.getElementById('rail');
+function build(){
+  rail.innerHTML=SCREENS.map(name=>`
+    <div class="slot">
+      <div class="slot-label">${name}</div>
+      <div class="phone"><div class="notch"></div>
+        <div class="screen" data-screen="${name}">${RENDER[name]()}</div>
+      </div>
+    </div>`).join('');
+}
+build();
+
+/* one screen re-render, preserving scroll position */
+function refresh(name){
+  const el=rail.querySelector(`[data-screen="${name}"]`);
+  if(!el) return;
+  const sc=el.querySelector('.scroll');
+  const y=sc?sc.scrollTop:0;
+  el.innerHTML=RENDER[name]();
+  const sc2=el.querySelector('.scroll');
+  if(sc2) sc2.scrollTop=y;
+}
+
+rail.addEventListener('click',e=>{
+  const t=e.target.closest('[data-cat],[data-amt],[data-rec],[data-rsvp],[data-notif],[data-go]');
+  if(!t) return;
+
+  if(t.dataset.cat!==undefined){ st.cat=t.dataset.cat; refresh('Donate'); return; }
+  if(t.dataset.amt!==undefined){ st.amt=+t.dataset.amt; refresh('Donate'); return; }
+  if(t.hasAttribute('data-rec')){ st.rec=!st.rec; refresh('Donate'); return; }
+  if(t.dataset.rsvp){ const k=t.dataset.rsvp; st.rsvp[k]=!st.rsvp[k]; refresh('Events'); return; }
+  if(t.dataset.notif){ const k=t.dataset.notif; st.notif[k]=!st.notif[k]; refresh('Notifications'); return; }
+
+  if(t.dataset.go){
+    const slot=[...rail.querySelectorAll('.slot')]
+      .find(s=>s.querySelector('.slot-label').textContent===t.dataset.go);
+    if(slot) slot.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  }
+});
+</script>
+</body>
+</html>
