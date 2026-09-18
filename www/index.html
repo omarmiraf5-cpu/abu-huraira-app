@@ -12,17 +12,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Silver Plaque: the real logo's own colors, extended - polished
-       silver/platinum calligraphy on deep navy. Monochrome metal
-       everywhere, except the scripture text itself: Ayah/Hadith
-       Arabic keeps gold, as the one deliberate warm exception. */
-    --navy:#14293F; --navy-lo:#1F3F5E; --navy-hi:#0A1826;
-    --metal:#E2E1E6; --metal-dk:#A9AEB8; --metal-lt:#F3F3F5; --metal-md:#CBCFD5;
-    --scripture:#D9A441;
-    --cream:#17304A; --ivory:#1D3854; --tint:rgba(226,225,230,.14);
-    --ink:#E7EAF0; --muted:#9BA8BC; --faint:#6E7C92;
+    /* Qandil: mosque lantern glass at night - bottle-green glass,
+       brass fittings, and the warm amber of the flame behind it. */
+    --navy:#171512; --navy-lo:#1F3D34; --navy-hi:#171512;
+    --metal:#E8A94B; --metal-dk:#A67D3F; --metal-lt:#F0C275; --metal-md:#C99A4A;
+    --scripture:#E8A94B;
+    --cream:#1C1916; --ivory:#1F3D34; --tint:rgba(232,169,75,.14);
+    --ink:#EDE6D6; --muted:#B9AE9C; --faint:#9C9587;
     --line:rgba(255,255,255,.10);
-    --paper:#0D1F30;
+    --paper:#141210;
   }
   *{box-sizing:border-box}
   body{
@@ -48,7 +46,7 @@
     letter-spacing:.26em;margin-top:1px}
   .page-head h1{font-size:30px;font-weight:600;margin-bottom:8px}
   .page-head p{margin:0 auto;max-width:520px;font-size:14px;line-height:1.6;
-    color:#B9C2D4}
+    color:#C9BFAE}
   .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.2em;
     text-transform:uppercase;color:var(--metal);margin-bottom:10px}
 
@@ -78,19 +76,19 @@
 
   /* ---------- hero ---------- */
   .hero{position:relative;overflow:hidden;
-    background:linear-gradient(165deg,var(--navy-lo) 0,#16324C 45%,var(--navy-hi) 100%);
+    background:linear-gradient(165deg,var(--navy-lo) 0,#1B2E27 45%,var(--navy-hi) 100%);
     border-radius:0 0 34px 34px;box-shadow:0 20px 40px rgba(10,20,36,.25);
     padding:44px 22px 36px;color:#F3EEE2}
   .hero .brandline{justify-content:flex-start;margin-bottom:18px}
   .hero .brandline img{width:38px;height:38px}
   .hero-greet{font-size:24px;font-weight:600;text-align:center;margin-bottom:22px}
-  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(226,225,230,.28);
+  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(232,169,75,.28);
     border-radius:20px;padding:20px 22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
   .lbl-gold{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--metal);font-weight:700}
   .prayer-name{font-family:'Cormorant Garamond',serif;font-size:36px;
     font-weight:600;margin-top:4px;line-height:1}
-  .prayer-sub{font-size:15px;color:#B9C2D4;margin-top:6px}
+  .prayer-sub{font-size:15px;color:#C9BFAE;margin-top:6px}
 
   .body-pad{padding:26px 20px 0}
   .sec{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -105,9 +103,9 @@
   .tile:active{transform:scale(.97)}
   .tile span{font-size:12.5px;font-weight:600;line-height:1.15}
   .tile.navy{background:linear-gradient(155deg,var(--navy-lo),var(--navy-hi));
-    border:1px solid rgba(226,225,230,.3);
+    border:1px solid rgba(232,169,75,.3);
     box-shadow:0 6px 14px rgba(0,0,0,.28);color:#F3EEE2}
-  .tile.silver{background:linear-gradient(155deg,var(--metal-lt),var(--metal-md));
+  .tile.accent{background:linear-gradient(155deg,var(--metal-lt),var(--metal-md));
     box-shadow:0 6px 14px rgba(180,130,40,.24);color:var(--navy)}
   .tile.plain{background:var(--ivory);border:1px solid var(--line);
     box-shadow:0 4px 12px rgba(0,0,0,.18);color:var(--ink)}
@@ -127,7 +125,7 @@
   .prow{display:flex;justify-content:space-between;align-items:center;
     padding:16px 18px;border-bottom:1px solid var(--line)}
   .prow:last-child{border-bottom:none}
-  .prow.on{background:linear-gradient(135deg,rgba(243,243,245,.16),rgba(203,207,213,.10))}
+  .prow.on{background:linear-gradient(135deg,rgba(240,194,117,.18),rgba(201,154,74,.10))}
   .pname{font-size:15.5px;font-weight:500;color:var(--muted)}
   .prow.on .pname{font-weight:700;color:var(--metal-lt)}
   .ptime{font-size:14px;color:var(--ink);text-align:right}
@@ -163,7 +161,7 @@
     padding:20px;margin-bottom:16px;
     box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14)}
   .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--metal-md);background:rgba(203,207,213,.16);
+    text-transform:uppercase;color:var(--metal-md);background:rgba(201,154,74,.18);
     padding:4px 10px;border-radius:7px;margin-bottom:12px}
   .etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
     color:var(--ink);margin-bottom:4px}
@@ -193,7 +191,7 @@
 
   /* ---------- tab bar ---------- */
   .tabs{position:absolute;left:16px;right:16px;bottom:16px;
-    background:rgba(16,37,68,.92);backdrop-filter:blur(16px);
+    background:rgba(23,21,18,.92);backdrop-filter:blur(16px);
     -webkit-backdrop-filter:blur(16px);border-radius:26px;
     box-shadow:0 18px 40px rgba(0,0,0,.32),0 3px 10px rgba(0,0,0,.18);
     border:1px solid rgba(255,255,255,.10);display:flex;justify-content:space-around;
@@ -201,7 +199,7 @@
   .tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:58px;
     padding:7px 0;border-radius:16px;background:none;border:none}
   .tab span{font-size:10.5px;font-weight:500;color:var(--muted)}
-  .tab.on{background:linear-gradient(135deg,rgba(243,243,245,.20),rgba(203,207,213,.12))}
+  .tab.on{background:linear-gradient(135deg,rgba(240,194,117,.20),rgba(201,154,74,.14))}
   .tab.on span{font-weight:700;color:var(--metal-lt)}
 
   .foot{text-align:center;padding:30px 20px 0;border-top:1px solid rgba(255,255,255,.14);
@@ -282,7 +280,7 @@ const tabbar=(active)=>`
   <div class="tabs">${TABS.map(t=>{
     const on=t.k===active;
     return `<button class="tab ${on?'on':''}" data-go="${t.k}">
-      ${svg(t.i,21,on?'#E2E1E6':'#97A0C9',on?1.9:1.6)}<span>${t.l}</span></button>`;
+      ${svg(t.i,21,on?'#E8A94B':'#B9AE9C',on?1.9:1.6)}<span>${t.l}</span></button>`;
   }).join('')}</div>`;
 
 /* ============================ live prayer times ============================ */
@@ -527,16 +525,16 @@ function Home(){
     <div class="body-pad">
       <div class="sec"><div class="sec-t">Quick Access</div><div class="sec-r"></div></div>
       <div class="qa">
-        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#E2E1E6')}<span>Prayer Times</span></a>
-        <a class="tile silver" data-go="Donate">${svg(I.heart,18,'#12213B')}<span>Donate</span></a>
-        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#F3F3F5')}<span>Events</span></a>
-        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#F3F3F5')}<span>Alerts</span></a>
+        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#E8A94B')}<span>Prayer Times</span></a>
+        <a class="tile accent" data-go="Donate">${svg(I.heart,18,'#171512')}<span>Donate</span></a>
+        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#F0C275')}<span>Events</span></a>
+        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#F0C275')}<span>Alerts</span></a>
       </div>
       ${(()=>{ const r=reflectionOfDay(); return `
       <div class="sec"><div class="sec-t">Reflection of the Day</div><div class="sec-r"></div></div>
       <div class="live" style="flex-direction:column;align-items:center;text-align:center">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:14px">
-          ${svg(I.spark,16,'#E2E1E6',1.6)}
+          ${svg(I.spark,16,'#E8A94B',1.6)}
           <div class="badge" style="margin:0">${r.type}</div>
         </div>
         <p class="ar" dir="rtl" lang="ar">${r.ar}</p>
@@ -569,8 +567,8 @@ function Prayer(){
           </div>`).join('')}
       </div>
       <div style="display:flex;gap:12px">
-        <div class="mini">${svg(I.compass,20,'#E2E1E6',1.6)}<span>Qibla Compass</span></div>
-        <div class="mini">${svg(I.cal,20,'#E2E1E6',1.6)}<span>Hijri Calendar</span></div>
+        <div class="mini">${svg(I.compass,20,'#E8A94B',1.6)}<span>Qibla Compass</span></div>
+        <div class="mini">${svg(I.cal,20,'#E8A94B',1.6)}<span>Hijri Calendar</span></div>
       </div>
     </div>
   </div>${tabbar('Prayer Times')}`;
@@ -587,13 +585,13 @@ function Donate(){
     <div class="lbl-dk">Sadaqah &amp; Support</div>
     <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
     <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
-      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#E2E1E6 60%)"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E2E1E6"/></svg>
-      <div style="width:34px;height:1px;background:#E2E1E6"></div>
-      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E2E1E6"/></svg>
-      <div style="width:34px;height:1px;background:#E2E1E6"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E2E1E6"/></svg>
-      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#E2E1E6 60%)"></div>
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#E8A94B 60%)"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E8A94B"/></svg>
+      <div style="width:34px;height:1px;background:#E8A94B"></div>
+      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E8A94B"/></svg>
+      <div style="width:34px;height:1px;background:#E8A94B"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E8A94B"/></svg>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#E8A94B 60%)"></div>
     </div>
     <div class="card" style="border-radius:22px;padding:22px 20px;margin-bottom:22px">
       <div class="cap">Category</div>
@@ -605,7 +603,7 @@ function Donate(){
         ${AMTS.map(a=>`<button class="chip ${st.amt===a?'on':''}" data-amt="${a}">$${a}</button>`).join('')}
       </div>
       <button data-rec style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px 2px;width:100%">
-        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#12213B',2.2):''}</div>
+        <div class="box ${st.rec?'on':''}">${st.rec?svg(I.check,12,'#171512',2.2):''}</div>
         <div style="font-size:14px;color:var(--ink)">Make this a recurring monthly gift</div>
       </button>
     </div>
@@ -617,7 +615,7 @@ function Donate(){
       Pay with Google Pay</button>
     <button style="width:100%;background:none;border:none;color:var(--muted);font-size:13.5px;text-decoration:underline;padding:4px">Use a card instead</button>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px">
-      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E2E1E6"/></svg>
+      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E8A94B"/></svg>
       <div style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6">
         ${st.rec?'Recurring':'One-time'} · ${st.cat} · $${st.amt}</div>
     </div>
@@ -645,7 +643,7 @@ function Events(){
           ${st.rsvp[id]?"✓ You're going":'RSVP'}</button>
       </div>`).join('')}
     <div style="display:flex;align-items:center;gap:8px;margin-top:22px">
-      ${svg(I.clock,15,'#E2E1E6',1.8)}
+      ${svg(I.clock,15,'#E8A94B',1.8)}
       <div style="font-size:12.5px;color:var(--muted);line-height:1.5">
         RSVPing here drives the morning-of reminder for anyone attending.</div>
     </div>
