@@ -12,13 +12,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#12213B; --navy-lo:#1B3357; --navy-hi:#0A1424;
+    /* Midnight Minaret: near-black indigo night sky + gold + starlight,
+       with a jade/pistachio accent (Celadon Garden's "paradise garden"
+       idea, reapplied inside the dark family instead of as a light theme) */
+    --navy:#0D1024; --navy-lo:#1B2142; --navy-hi:#060814;
     --gold:#D9A441; --gold-dk:#B9812E; --gold-lt:#F0CE8C; --gold-md:#C98A2E;
-    --green:#34D399; --green-dk:#1FAE7E;
-    --cream:#16305C; --ivory:#1F4171; --tint:rgba(217,164,65,.16);
-    --ink:#E9EEF7; --muted:#9FB2CC; --faint:#7C90AE;
+    --jade:#5FB08A; --jade-dk:#3F8F6D;
+    --cream:#10142C; --ivory:#1D2545; --tint:rgba(217,164,65,.16);
+    --ink:#DCE1F0; --muted:#97A0C9; --faint:#6C76A0;
     --line:rgba(255,255,255,.10);
-    --paper:#102544;
+    --paper:#090B18;
   }
   *{box-sizing:border-box}
   body{
@@ -74,7 +77,7 @@
 
   /* ---------- hero ---------- */
   .hero{position:relative;overflow:hidden;
-    background:linear-gradient(165deg,var(--navy-lo) 0,#16294A 45%,var(--navy-hi) 100%);
+    background:linear-gradient(165deg,var(--navy-lo) 0,#12172E 45%,var(--navy-hi) 100%);
     border-radius:0 0 34px 34px;box-shadow:0 20px 40px rgba(10,20,36,.25);
     padding:44px 22px 36px;color:#F3EEE2}
   .hero .brandline{justify-content:flex-start;margin-bottom:18px}
@@ -118,7 +121,7 @@
       inset 0 1px 0 rgba(255,255,255,.06)}
   .page-t{font-size:25px;font-weight:600;color:var(--ink)}
   .lbl-dk{font-size:11px;font-weight:700;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--green)}
+    text-transform:uppercase;color:var(--jade)}
 
   .prow{display:flex;justify-content:space-between;align-items:center;
     padding:16px 18px;border-bottom:1px solid var(--line)}
@@ -159,12 +162,12 @@
     padding:20px;margin-bottom:16px;
     box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14)}
   .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--green);background:rgba(52,211,153,.16);
+    text-transform:uppercase;color:var(--jade);background:rgba(95,176,138,.16);
     padding:4px 10px;border-radius:7px;margin-bottom:12px}
   .etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
     color:var(--ink);margin-bottom:4px}
   .esched{font-size:13px;color:var(--muted);margin-bottom:16px}
-  .rsvp{border:1px solid var(--green);background:none;color:var(--green);
+  .rsvp{border:1px solid var(--jade);background:none;color:var(--jade);
     border-radius:20px;padding:8px 17px;font-size:13px;font-weight:600}
   .rsvp.on{border:none;color:var(--navy);font-weight:700;
     background:linear-gradient(135deg,var(--gold-lt),var(--gold-md));
@@ -278,7 +281,7 @@ const tabbar=(active)=>`
   <div class="tabs">${TABS.map(t=>{
     const on=t.k===active;
     return `<button class="tab ${on?'on':''}" data-go="${t.k}">
-      ${svg(t.i,21,on?'#D9A441':'#9FB2CC',on?1.9:1.6)}<span>${t.l}</span></button>`;
+      ${svg(t.i,21,on?'#D9A441':'#97A0C9',on?1.9:1.6)}<span>${t.l}</span></button>`;
   }).join('')}</div>`;
 
 /* ============================ live prayer times ============================ */
