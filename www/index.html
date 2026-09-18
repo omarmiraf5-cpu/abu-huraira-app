@@ -12,16 +12,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Midnight Minaret: near-black indigo night sky + gold + starlight,
-       with a jade/pistachio accent (Celadon Garden's "paradise garden"
-       idea, reapplied inside the dark family instead of as a light theme) */
-    --navy:#0D1024; --navy-lo:#1B2142; --navy-hi:#060814;
-    --gold:#D9A441; --gold-dk:#B9812E; --gold-lt:#F0CE8C; --gold-md:#C98A2E;
-    --jade:#5FB08A; --jade-dk:#3F8F6D;
-    --cream:#10142C; --ivory:#1D2545; --tint:rgba(217,164,65,.16);
-    --ink:#DCE1F0; --muted:#97A0C9; --faint:#6C76A0;
+    /* Silver Plaque: the real logo's own colors, extended - polished
+       silver/platinum calligraphy on deep navy. Monochrome metal, no
+       separate gold or green accent. */
+    --navy:#14293F; --navy-lo:#1F3F5E; --navy-hi:#0A1826;
+    --metal:#E2E1E6; --metal-dk:#A9AEB8; --metal-lt:#F3F3F5; --metal-md:#CBCFD5;
+    --cream:#17304A; --ivory:#1D3854; --tint:rgba(226,225,230,.14);
+    --ink:#E7EAF0; --muted:#9BA8BC; --faint:#6E7C92;
     --line:rgba(255,255,255,.10);
-    --paper:#090B18;
+    --paper:#0D1F30;
   }
   *{box-sizing:border-box}
   body{
@@ -43,13 +42,13 @@
     filter:drop-shadow(0 3px 6px rgba(0,0,0,.45))}
   .brand-name{font-family:'Aladin',serif;font-size:21px;line-height:1.05;
     text-shadow:0 1px 3px rgba(0,0,0,.4)}
-  .brand-sub{font-family:'Aladin',serif;font-size:10.5px;color:var(--gold);
+  .brand-sub{font-family:'Aladin',serif;font-size:10.5px;color:var(--metal);
     letter-spacing:.26em;margin-top:1px}
   .page-head h1{font-size:30px;font-weight:600;margin-bottom:8px}
   .page-head p{margin:0 auto;max-width:520px;font-size:14px;line-height:1.6;
     color:#B9C2D4}
   .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    text-transform:uppercase;color:var(--metal);margin-bottom:10px}
 
   .wrap{max-width:1500px;margin:0 auto;padding:36px 20px 60px}
   .hint{text-align:center;font-size:13px;color:var(--muted);margin-bottom:28px}
@@ -77,16 +76,16 @@
 
   /* ---------- hero ---------- */
   .hero{position:relative;overflow:hidden;
-    background:linear-gradient(165deg,var(--navy-lo) 0,#12172E 45%,var(--navy-hi) 100%);
+    background:linear-gradient(165deg,var(--navy-lo) 0,#16324C 45%,var(--navy-hi) 100%);
     border-radius:0 0 34px 34px;box-shadow:0 20px 40px rgba(10,20,36,.25);
     padding:44px 22px 36px;color:#F3EEE2}
   .hero .brandline{justify-content:flex-start;margin-bottom:18px}
   .hero .brandline img{width:38px;height:38px}
   .hero-greet{font-size:24px;font-weight:600;text-align:center;margin-bottom:22px}
-  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(217,164,65,.28);
+  .glass{background:rgba(255,255,255,.07);border:1px solid rgba(226,225,230,.28);
     border-radius:20px;padding:20px 22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
   .lbl-gold{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--gold);font-weight:700}
+    color:var(--metal);font-weight:700}
   .prayer-name{font-family:'Cormorant Garamond',serif;font-size:36px;
     font-weight:600;margin-top:4px;line-height:1}
   .prayer-sub{font-size:15px;color:#B9C2D4;margin-top:6px}
@@ -104,9 +103,9 @@
   .tile:active{transform:scale(.97)}
   .tile span{font-size:12.5px;font-weight:600;line-height:1.15}
   .tile.navy{background:linear-gradient(155deg,var(--navy-lo),var(--navy-hi));
-    border:1px solid rgba(217,164,65,.3);
+    border:1px solid rgba(226,225,230,.3);
     box-shadow:0 6px 14px rgba(0,0,0,.28);color:#F3EEE2}
-  .tile.gold{background:linear-gradient(155deg,var(--gold-lt),var(--gold-md));
+  .tile.silver{background:linear-gradient(155deg,var(--metal-lt),var(--metal-md));
     box-shadow:0 6px 14px rgba(180,130,40,.24);color:var(--navy)}
   .tile.plain{background:var(--ivory);border:1px solid var(--line);
     box-shadow:0 4px 12px rgba(0,0,0,.18);color:var(--ink)}
@@ -121,18 +120,18 @@
       inset 0 1px 0 rgba(255,255,255,.06)}
   .page-t{font-size:25px;font-weight:600;color:var(--ink)}
   .lbl-dk{font-size:11px;font-weight:700;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--jade)}
+    text-transform:uppercase;color:var(--metal-md)}
 
   .prow{display:flex;justify-content:space-between;align-items:center;
     padding:16px 18px;border-bottom:1px solid var(--line)}
   .prow:last-child{border-bottom:none}
-  .prow.on{background:linear-gradient(135deg,rgba(240,206,140,.16),rgba(217,164,65,.08))}
+  .prow.on{background:linear-gradient(135deg,rgba(243,243,245,.16),rgba(203,207,213,.10))}
   .pname{font-size:15.5px;font-weight:500;color:var(--muted)}
-  .prow.on .pname{font-weight:700;color:var(--gold-lt)}
+  .prow.on .pname{font-weight:700;color:var(--metal-lt)}
   .ptime{font-size:14px;color:var(--ink);text-align:right}
   .piq{font-size:12px;color:var(--faint);margin-top:2px}
-  .prow.on .ptime{font-weight:700;color:var(--gold-lt)}
-  .prow.on .piq{color:var(--gold);font-weight:600}
+  .prow.on .ptime{font-weight:700;color:var(--metal-lt)}
+  .prow.on .piq{color:var(--metal);font-weight:600}
 
   .mini{flex:1;background:var(--ivory);border:1px solid var(--line);
     border-radius:16px;padding:16px;display:flex;align-items:center;gap:10px;
@@ -143,7 +142,7 @@
   .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:600;
     border:1px solid rgba(255,255,255,.16);background:var(--ivory);color:var(--ink)}
   .chip.on{border:none;color:var(--navy);font-weight:700;
-    background:linear-gradient(135deg,var(--gold-lt),var(--gold) 55%,var(--gold-dk));
+    background:linear-gradient(135deg,var(--metal-lt),var(--metal) 55%,var(--metal-dk));
     box-shadow:0 4px 12px rgba(201,138,46,.35)}
   .chiprow{display:flex;flex-wrap:wrap;gap:9px}
   .cap{font-size:12px;font-weight:700;letter-spacing:.06em;
@@ -155,22 +154,22 @@
     box-shadow:0 3px 10px rgba(18,33,59,.06)}
   .box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(255,255,255,.32);
     flex-shrink:0;display:flex;align-items:center;justify-content:center}
-  .box.on{border:none;background:linear-gradient(135deg,var(--gold-lt),var(--gold-md))}
+  .box.on{border:none;background:linear-gradient(135deg,var(--metal-lt),var(--metal-md))}
 
   /* ---------- events ---------- */
   .ecard{background:var(--ivory);border:1px solid var(--line);border-radius:20px;
     padding:20px;margin-bottom:16px;
     box-shadow:0 16px 34px rgba(0,0,0,.24),0 2px 8px rgba(0,0,0,.14)}
   .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--jade);background:rgba(95,176,138,.16);
+    text-transform:uppercase;color:var(--metal-md);background:rgba(203,207,213,.16);
     padding:4px 10px;border-radius:7px;margin-bottom:12px}
   .etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
     color:var(--ink);margin-bottom:4px}
   .esched{font-size:13px;color:var(--muted);margin-bottom:16px}
-  .rsvp{border:1px solid var(--jade);background:none;color:var(--jade);
+  .rsvp{border:1px solid var(--metal-md);background:none;color:var(--metal-md);
     border-radius:20px;padding:8px 17px;font-size:13px;font-weight:600}
   .rsvp.on{border:none;color:var(--navy);font-weight:700;
-    background:linear-gradient(135deg,var(--gold-lt),var(--gold-md));
+    background:linear-gradient(135deg,var(--metal-lt),var(--metal-md));
     box-shadow:0 4px 12px rgba(201,138,46,.35)}
 
   /* ---------- notifications ---------- */
@@ -186,7 +185,7 @@
     padding:3px;display:flex;align-items:center;justify-content:flex-start;
     flex-shrink:0;transition:background .16s ease}
   .sw.on{justify-content:flex-end;
-    background:linear-gradient(135deg,var(--gold-lt),var(--gold-md));
+    background:linear-gradient(135deg,var(--metal-lt),var(--metal-md));
     box-shadow:0 3px 8px rgba(201,138,46,.3)}
   .knob{width:21px;height:21px;border-radius:50%;background:#fff}
 
@@ -200,16 +199,16 @@
   .tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:58px;
     padding:7px 0;border-radius:16px;background:none;border:none}
   .tab span{font-size:10.5px;font-weight:500;color:var(--muted)}
-  .tab.on{background:linear-gradient(135deg,rgba(240,206,140,.20),rgba(217,164,65,.10))}
-  .tab.on span{font-weight:700;color:var(--gold-lt)}
+  .tab.on{background:linear-gradient(135deg,rgba(243,243,245,.20),rgba(203,207,213,.12))}
+  .tab.on span{font-weight:700;color:var(--metal-lt)}
 
   .foot{text-align:center;padding:30px 20px 0;border-top:1px solid rgba(255,255,255,.14);
     margin-top:10px}
-  .foot strong{color:var(--gold)}
+  .foot strong{color:var(--metal)}
   .foot p{font-size:13px;color:var(--muted);line-height:1.6;margin:4px 0}
 
   .ar{font-family:'Amiri Quran',serif;direction:rtl;font-size:24px;
-    color:var(--gold-lt);line-height:2.15;margin:0 0 10px;text-align:center}
+    color:var(--metal-lt);line-height:2.15;margin:0 0 10px;text-align:center}
 
   @media (max-width:900px){
     .page-head h1{font-size:24px}
@@ -281,7 +280,7 @@ const tabbar=(active)=>`
   <div class="tabs">${TABS.map(t=>{
     const on=t.k===active;
     return `<button class="tab ${on?'on':''}" data-go="${t.k}">
-      ${svg(t.i,21,on?'#D9A441':'#97A0C9',on?1.9:1.6)}<span>${t.l}</span></button>`;
+      ${svg(t.i,21,on?'#E2E1E6':'#97A0C9',on?1.9:1.6)}<span>${t.l}</span></button>`;
   }).join('')}</div>`;
 
 /* ============================ live prayer times ============================ */
@@ -526,16 +525,16 @@ function Home(){
     <div class="body-pad">
       <div class="sec"><div class="sec-t">Quick Access</div><div class="sec-r"></div></div>
       <div class="qa">
-        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#D9A441')}<span>Prayer Times</span></a>
-        <a class="tile gold" data-go="Donate">${svg(I.heart,18,'#12213B')}<span>Donate</span></a>
-        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#F0CE8C')}<span>Events</span></a>
-        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#F0CE8C')}<span>Alerts</span></a>
+        <a class="tile navy" data-go="Prayer Times">${svg(I.mosque,18,'#E2E1E6')}<span>Prayer Times</span></a>
+        <a class="tile silver" data-go="Donate">${svg(I.heart,18,'#12213B')}<span>Donate</span></a>
+        <a class="tile plain" data-go="Events">${svg(I.cal,18,'#F3F3F5')}<span>Events</span></a>
+        <a class="tile plain" data-go="Notifications">${svg(I.bell,18,'#F3F3F5')}<span>Alerts</span></a>
       </div>
       ${(()=>{ const r=reflectionOfDay(); return `
       <div class="sec"><div class="sec-t">Reflection of the Day</div><div class="sec-r"></div></div>
       <div class="live" style="flex-direction:column;align-items:center;text-align:center">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:14px">
-          ${svg(I.spark,16,'#D9A441',1.6)}
+          ${svg(I.spark,16,'#E2E1E6',1.6)}
           <div class="badge" style="margin:0">${r.type}</div>
         </div>
         <p class="ar" dir="rtl" lang="ar">${r.ar}</p>
@@ -568,8 +567,8 @@ function Prayer(){
           </div>`).join('')}
       </div>
       <div style="display:flex;gap:12px">
-        <div class="mini">${svg(I.compass,20,'#D9A441',1.6)}<span>Qibla Compass</span></div>
-        <div class="mini">${svg(I.cal,20,'#D9A441',1.6)}<span>Hijri Calendar</span></div>
+        <div class="mini">${svg(I.compass,20,'#E2E1E6',1.6)}<span>Qibla Compass</span></div>
+        <div class="mini">${svg(I.cal,20,'#E2E1E6',1.6)}<span>Hijri Calendar</span></div>
       </div>
     </div>
   </div>${tabbar('Prayer Times')}`;
@@ -586,13 +585,13 @@ function Donate(){
     <div class="lbl-dk">Sadaqah &amp; Support</div>
     <h1 class="page-t" style="margin:10px 0">Give to Abu Huraira Centre</h1>
     <div style="display:flex;align-items:center;gap:8px;margin:0 0 24px">
-      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#D9A441 60%)"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#D9A441"/></svg>
-      <div style="width:34px;height:1px;background:#D9A441"></div>
-      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#D9A441"/></svg>
-      <div style="width:34px;height:1px;background:#D9A441"></div>
-      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#D9A441"/></svg>
-      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#D9A441 60%)"></div>
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#E2E1E6 60%)"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E2E1E6"/></svg>
+      <div style="width:34px;height:1px;background:#E2E1E6"></div>
+      <svg width="5" height="5" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E2E1E6"/></svg>
+      <div style="width:34px;height:1px;background:#E2E1E6"></div>
+      <svg width="7" height="7" viewBox="0 0 8 8"><path d="M4 0 8 4 4 8 0 4Z" fill="#E2E1E6"/></svg>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#E2E1E6 60%)"></div>
     </div>
     <div class="card" style="border-radius:22px;padding:22px 20px;margin-bottom:22px">
       <div class="cap">Category</div>
@@ -616,7 +615,7 @@ function Donate(){
       Pay with Google Pay</button>
     <button style="width:100%;background:none;border:none;color:var(--muted);font-size:13.5px;text-decoration:underline;padding:4px">Use a card instead</button>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px">
-      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#D9A441"/></svg>
+      <svg width="4" height="4" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#E2E1E6"/></svg>
       <div style="font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6">
         ${st.rec?'Recurring':'One-time'} · ${st.cat} · $${st.amt}</div>
     </div>
@@ -644,7 +643,7 @@ function Events(){
           ${st.rsvp[id]?"✓ You're going":'RSVP'}</button>
       </div>`).join('')}
     <div style="display:flex;align-items:center;gap:8px;margin-top:22px">
-      ${svg(I.clock,15,'#D9A441',1.8)}
+      ${svg(I.clock,15,'#E2E1E6',1.8)}
       <div style="font-size:12.5px;color:var(--muted);line-height:1.5">
         RSVPing here drives the morning-of reminder for anyone attending.</div>
     </div>
