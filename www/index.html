@@ -85,6 +85,8 @@
     padding:44px 22px 36px;color:#F3EEE2}
   .hero .brandline{justify-content:flex-start;margin-bottom:18px}
   .hero .brandline img{width:38px;height:38px}
+  .hero-greet-ar{font-family:'Lateef',serif;font-weight:700;direction:rtl;
+    font-size:28px;text-align:center;color:#F3EEE2;margin-bottom:2px}
   .hero-greet{font-family:'Aladin',cursive;font-size:30px;font-weight:400;
     letter-spacing:.03em;text-align:center;margin-bottom:22px}
   .glass{background:rgba(255,255,255,.07);border:1px solid rgba(156,122,60,.28);
@@ -520,6 +522,7 @@ function Home(){
   return `<div class="scroll" style="padding-bottom:100px">
     <div class="hero">
       ${brand(true)}
+      <div class="hero-greet-ar" dir="rtl" lang="ar">السلام عليكم</div>
       <div class="hero-greet">Assalamu Alaikum</div>
       <div class="glass">
         <div class="lbl-gold">Next Prayer</div>
