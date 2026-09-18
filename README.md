@@ -72,7 +72,7 @@ approving the look and feel before development builds it for real.
 
 | Where | Currently | Needs |
 |---|---|---|
-| Prayer times | Real times from abuhuraira.org (static, as of Sep 17 2026) | Live daily updates instead of a fixed table |
+| Prayer times | Live astronomical calculation (ISNA angles, standard Asr) for North York, ON, calibrated to abuhuraira.org's Sep 17 2026 schedule | Confirm the calculation method/Asr juristic school and Iqama offsets directly with AHC |
 | Hijri date | 6 Rabi' al-Thānī 1448 | Live calculation |
 | Events | Three known weekly classes | Full program list from AHC |
 | Donation amounts | $10 / $25 / $50 / $100 | Confirm with AHC |

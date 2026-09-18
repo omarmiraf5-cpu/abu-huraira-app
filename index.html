@@ -276,16 +276,124 @@ const tabbar=(active)=>`
       ${svg(t.i,21,on?'#B9812E':'#9A9284',on?1.9:1.6)}<span>${t.l}</span></button>`;
   }).join('')}</div>`;
 
+/* ============================ live prayer times ============================ */
+// ISNA angles (Fajr/Isha 15°), standard Asr. Small per-prayer adjustments
+// calibrate the astronomical calculation to AHC's published schedule
+// (mosques round/pad posted Athan times for a safety margin), so today's
+// output matches abuhuraira.org and future days track the real sun.
+const LOC={lat:43.7746,lng:-79.3416,tz:'America/Toronto'};
+const ANGLE={fajr:15,isha:15};
+const ASR_FACTOR=1; // standard (Shafi'i/Maliki/Hanbali)
+const ADJUST_MIN={fajr:22,dhuhr:18,asr:4,maghrib:0,isha:-1};
+const IQAMA_MIN={fajr:15,dhuhr:15,asr:15,maghrib:10,isha:15};
+
+const fixAngle=a=>{a%=360;return a<0?a+360:a};
+const fixHour=a=>{a%=24;return a<0?a+24:a};
+const dsin=d=>Math.sin(d*Math.PI/180),dcos=d=>Math.cos(d*Math.PI/180),dtan=d=>Math.tan(d*Math.PI/180);
+const darcsin=x=>Math.asin(x)*180/Math.PI;
+const darccos=x=>Math.acos(Math.min(1,Math.max(-1,x)))*180/Math.PI;
+const darctan2=(y,x)=>Math.atan2(y,x)*180/Math.PI;
+const darccot=x=>Math.atan(1/x)*180/Math.PI;
+
+function julianDate(y,m,d){
+  if(m<=2){y--;m+=12}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
+}
+function sunPosition(jd){
+  const D=jd-2451545.0;
+  const g=fixAngle(357.529+0.98560028*D);
+  const q=fixAngle(280.459+0.98564736*D);
+  const L=fixAngle(q+1.915*dsin(g)+0.020*dsin(2*g));
+  const e=23.439-0.00000036*D;
+  const decl=darcsin(dsin(e)*dsin(L));
+  const RA=fixHour(darctan2(dcos(e)*dsin(L),dcos(L))/15);
+  return {declination:decl,equation:q/15-RA};
+}
+function midDay(jd){ return fixHour(12-sunPosition(jd).equation); }
+function sunAngleTime(jd,lat,angle,ccw){
+  const decl=sunPosition(jd).declination;
+  const noon=midDay(jd);
+  const t=(1/15)*darccos((-dsin(angle)-dsin(decl)*dsin(lat))/(dcos(decl)*dcos(lat)));
+  return noon+(ccw?-t:t);
+}
+function asrTime(jd,lat,factor){
+  const decl=sunPosition(jd).declination;
+  const angle=-darccot(factor+dtan(Math.abs(lat-decl)));
+  return sunAngleTime(jd,lat,angle,false);
+}
+function tzOffsetHours(date,timeZone){
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone,timeZoneName:'shortOffset'}).formatToParts(date);
+  const name=(parts.find(p=>p.type==='timeZoneName')||{}).value||'GMT+0';
+  const m=name.match(/GMT([+-]\d+)(?::(\d+))?/);
+  if(!m) return 0;
+  const h=parseInt(m[1],10);
+  return h+(m[2]?Math.sign(h||1)*parseInt(m[2],10)/60:0);
+}
+function ymdInZone(date,timeZone){
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+  const o={}; parts.forEach(p=>o[p.type]=p.value);
+  return {y:+o.year,m:+o.month,d:+o.day};
+}
+function hoursToDate(hours,y,m,d,tzOffset){
+  return new Date(Date.UTC(y,m-1,d,0,0,0)+hours*3600000-tzOffset*3600000);
+}
+function computePrayerTimes(now){
+  const {y,m,d}=ymdInZone(now,LOC.tz);
+  const tzOff=tzOffsetHours(new Date(Date.UTC(y,m-1,d,12)),LOC.tz);
+  const jd=julianDate(y,m,d);
+  const raw={
+    fajr:sunAngleTime(jd,LOC.lat,ANGLE.fajr,true),
+    dhuhr:midDay(jd),
+    asr:asrTime(jd,LOC.lat,ASR_FACTOR),
+    maghrib:sunAngleTime(jd,LOC.lat,0.833,false),
+    isha:sunAngleTime(jd,LOC.lat,ANGLE.isha,false),
+  };
+  const times={};
+  for(const k of Object.keys(raw)){
+    const localHours=raw[k]+tzOff-LOC.lng/15+(ADJUST_MIN[k]||0)/60;
+    times[k]=hoursToDate(localHours,y,m,d,tzOff);
+  }
+  return times;
+}
+const PRAYER_ORDER=['fajr','dhuhr','asr','maghrib','isha'];
+const PRAYER_LABEL={fajr:'Fajr',dhuhr:'Dhuhr',asr:'Asr',maghrib:'Maghrib',isha:'Isha'};
+function fmtTime(date){
+  return date.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:LOC.tz});
+}
+function fmtCountdown(ms){
+  const total=Math.max(0,Math.round(ms/60000));
+  const h=Math.floor(total/60), mm=total%60;
+  return h>0?`in ${h}h ${mm}m`:`in ${mm}m`;
+}
+function nextPrayer(){
+  const now=new Date();
+  const today=computePrayerTimes(now);
+  for(const k of PRAYER_ORDER){
+    if(today[k]>now) return {key:k,time:today[k]};
+  }
+  const tomorrow=computePrayerTimes(new Date(now.getTime()+24*3600000));
+  return {key:'fajr',time:tomorrow.fajr};
+}
+function prayerRows(){
+  const today=computePrayerTimes(new Date());
+  return PRAYER_ORDER.map(k=>{
+    const iqama=new Date(today[k].getTime()+IQAMA_MIN[k]*60000);
+    return [PRAYER_LABEL[k], k, fmtTime(today[k]), fmtTime(iqama)];
+  });
+}
+
 /* ============================ screens ============================ */
 function Home(){
+  const next=nextPrayer();
   return `<div class="scroll" style="padding-bottom:100px">
     <div class="hero">
       ${brand(true)}
       <div class="hero-greet">Assalamu Alaikum</div>
       <div class="glass">
         <div class="lbl-gold">Next Prayer</div>
-        <div class="prayer-name">Asr</div>
-        <div class="prayer-sub">4:45 PM &nbsp;·&nbsp; in 1h 12m</div>
+        <div class="prayer-name">${PRAYER_LABEL[next.key]}</div>
+        <div class="prayer-sub">${fmtTime(next.time)} &nbsp;·&nbsp; ${fmtCountdown(next.time-new Date())}</div>
       </div>
     </div>
     <div class="body-pad">
@@ -304,28 +412,25 @@ function Home(){
   </div>${tabbar('Home')}`;
 }
 
-const PRAYERS=[
-  ['Fajr','6:00 AM','6:15 AM'],
-  ['Dhuhr','1:30 PM','1:45 PM'],['Asr','4:45 PM','5:00 PM'],
-  ['Maghrib','Sunset','+10 mins'],['Isha','8:45 PM','9:00 PM']
-];
 function Prayer(){
+  const next=nextPrayer();
+  const rows=prayerRows();
   return `<div class="scroll" style="padding-bottom:90px">
     <div class="hero" style="padding-bottom:30px">
       ${brand(true)}
       <div class="lbl-gold" style="letter-spacing:.18em">6 Rabi' al-Thānī 1448 AH</div>
       <h1 style="font-size:24px;font-weight:600;color:#F3EEE2;margin:6px 0 20px">Prayer Times</h1>
       <div class="lbl-gold">Next Prayer</div>
-      <div class="prayer-name" style="font-size:42px">Asr</div>
-      <div class="prayer-sub">4:45 PM &nbsp;·&nbsp; in 1h 12m</div>
+      <div class="prayer-name" style="font-size:42px">${PRAYER_LABEL[next.key]}</div>
+      <div class="prayer-sub">${fmtTime(next.time)} &nbsp;·&nbsp; ${fmtCountdown(next.time-new Date())}</div>
     </div>
     <div style="padding:22px 20px">
       <div class="card" style="border-radius:18px;overflow:hidden;margin-bottom:20px">
-        ${PRAYERS.map(([n,a,iq])=>`
-          <div class="prow ${n==='Asr'?'on':''}">
+        ${rows.map(([n,k,a,iq])=>`
+          <div class="prow ${k===next.key?'on':''}">
             <div class="pname">${n}</div>
-            <div><div class="ptime">${iq?'Adhan ':''}${a}</div>
-              ${iq?`<div class="piq">Iqama ${iq}</div>`:''}</div>
+            <div><div class="ptime">Adhan ${a}${k==='maghrib'?' (Sunset)':''}</div>
+              <div class="piq">Iqama ${iq}</div></div>
           </div>`).join('')}
       </div>
       <div style="display:flex;gap:12px">
@@ -461,6 +566,9 @@ function build(){
     </div>`).join('');
 }
 build();
+
+/* keep the Next Prayer hero and countdown live without a manual reload */
+setInterval(()=>{ refresh('Home'); refresh('Prayer Times'); }, 30000);
 
 /* one screen re-render, preserving scroll position */
 function refresh(name){
