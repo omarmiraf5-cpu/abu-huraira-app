@@ -1,105 +1,113 @@
-# AHC App
+# Abu Huraira Center (AHC) Mobile
 
-The five-screen design (Home, Prayer Times, Donate, Events,
-Notifications) as a plain web app in `www/`, wrapped with
-[Capacitor](https://capacitorjs.com) into real native Android and iOS
-app projects so it can be built and submitted to the Play Store / App
-Store.
+Expo (React Native) + Expo Router + TypeScript app for Abu Huraira Center.
 
-```
-www/                 the actual app - HTML/CSS/JS, no build step
-  index.html
-  assets/
-    mark-light.png   logo for dark backgrounds
-    mark-navy.png    logo for light backgrounds
-android/             native Android Studio project (Capacitor-generated)
-ios/                 native Xcode project (Capacitor-generated)
-resources/           source icon.png / splash.png used to generate all
-                     app icon & splash sizes (via `npx capacitor-assets generate`)
-capacitor.config.json
-```
+## Stack
 
-The only external request `www/index.html` makes is to Google Fonts.
-Everything else is local; the native shells add no backend of their own.
+- Expo SDK (latest stable scaffolded here)
+- Expo Router (file-based tabs)
+- TypeScript
+- React Native only (not Capacitor / Ionic)
+- Brand fonts via `expo-google-fonts` (Playfair Display display face, Inter UI face, Amiri for Arabic)
+- Icons via `@expo/vector-icons`, gradients via `expo-linear-gradient`, geometric pattern via `react-native-svg`, haptics via `expo-haptics`
+- Checkout via `expo-web-browser`
 
----
+## Sharing a preview
 
-## Building the native apps
+See [SHARING.md](./SHARING.md): a browser link, Expo Go on a phone (`npm run share`), or an installable test build (`eas.json`).
 
-**Android** (works on Windows/Mac/Linux):
-1. Install [Android Studio](https://developer.android.com/studio).
-2. Open the `android/` folder as a project.
-3. Let it sync (downloads the Android Gradle Plugin/SDK - this needs
-   normal internet access to Google's servers, which this dev sandbox
-   didn't have, so it was never build-tested here).
-4. Run on an emulator or a plugged-in phone via the ▶ button, or
-   **Build → Generate Signed Bundle/APK** for a Play Store upload.
-5. Play Store submission needs a [Google Play Console](https://play.google.com/console) account ($25 one-time, your own).
+## Setup
 
-**iOS** (needs a Mac):
-1. Install Xcode from the Mac App Store.
-2. Open `ios/App/App.xcworkspace` (not the `.xcodeproj`).
-3. Set your Team under **Signing & Capabilities** (needs your own
-   [Apple Developer](https://developer.apple.com/programs/) account,
-   $99/yr).
-4. Run on the simulator or a plugged-in iPhone via ▶, or
-   **Product → Archive** to upload to App Store Connect via TestFlight.
-
-**After editing anything in `www/`**, re-sync both native projects
-before rebuilding:
-```
-npx cap sync
+```bash
+cd ahc-mobile
+npm install
+npx expo start
 ```
 
-**Regenerating icons/splash** after changing `resources/icon.png` or
-`resources/splash.png`:
+Then open in Expo Go, iOS simulator, Android emulator, or press `w` for web.
+
+Optional env (public only — never put secrets in the client):
+
+```bash
+# .env
+EXPO_PUBLIC_MUSLIMOON_BASE_URL=https://masajid.muslimoon.app
+EXPO_PUBLIC_AHC_ORG_ID=e8a7eda8-3c55-4a9c-9b8f-9c9d37687534
 ```
-npx capacitor-assets generate
+
+Typecheck:
+
+```bash
+npx tsc --noEmit
 ```
 
----
+## Brand
 
-## Deploying the web preview (unchanged)
+See [BRANDING.md](./BRANDING.md). Tokens: `src/theme/tokens.ts`. White logo: `assets/ahc-logo-white.png`.
 
-The `www/` folder is still a normal static site — Netlify is already
-linked to this repo/branch (see `netlify.toml`) and auto-deploys to
-`ahc-app-preview.netlify.app` on every push. To deploy it anywhere else
-(Vercel, Cloudflare Pages, plain hosting), just publish the `www/`
-folder the same way.
+Currency: **CAD**. Timezone: **America/Toronto**.
 
----
+## App structure
 
-## Before you send the link
+| Tab | Route | Notes |
+| --- | --- | --- |
+| Home | `app/(tabs)/index.tsx` | Dashboard: greeting, next-prayer hero, today strip, quick actions, upcoming events, donate CTA |
+| Prayer | `app/(tabs)/prayer.tsx` | Live Muslimoon prayer times (mock fallback), next-prayer highlight |
+| Events | `app/(tabs)/events.tsx` | Stub event cards (live endpoint exists but AHC list is empty) |
+| Donate | `app/(tabs)/donate.tsx` | 2-step flow → checkout |
+| More | `app/(tabs)/more.tsx` | About / contact stubs |
 
-- [ ] Open it on your **phone** as well as desktop — the layout scrolls
-      sideways and you want to confirm that feels natural on mobile.
-- [ ] Tap through everything: switch screens from the bottom tab bar,
-      toggle a notification, pick a donation amount, hit RSVP.
-- [ ] Check the logo appears on all five screens.
-- [ ] Open the link in a private/incognito window to be sure it's
-      publicly reachable and not cached from your own session.
+Supporting code:
 
----
+- `src/api/muslimoon.ts` — Muslimoon client (`/v1/<org_id>/...`); live prayer times, other calls still mocked
+- `src/utils/prayerTime.ts` — time parsing, Toronto-time helpers, sunset estimate
+- `docs/muslimoon-api.md`, `docs/samples/` — endpoint findings and sample responses
+- `src/config/donations.ts` — IRM checkout URL builder
+- `src/theme/tokens.ts` — design system (colour ramp, spacing, radius, type scale, elevation, motion)
+- `src/components/*` — design-system components (Screen, HeroHeader, Card, Button, SectionHeader, ListGroup, TextField, EmptyState, …)
+- `src/hooks/usePrayerTimes.ts`, `src/utils/prayerSchedule.ts` — shared prayer-time loading + next-prayer logic (Home and Prayer)
+- `docs/screenshots/premium-*.png` — 390×844 web screenshots of the redesign (web shows sample prayer times because of CORS)
 
-## A note on what this is
+## Reminders (notifications)
 
-The UI is real and this now builds into real installable apps, but
-there is still **no backend**. Prayer times are calculated client-side
-(see below), and events/donation amounts/notifications are static or
-client-only state — nothing persists across sessions, no payments
-actually process, and no push notifications actually fire yet. Those
-each need their own service (a small API/database, a payment
-processor, Firebase Cloud Messaging or similar) before this is
-production-ready, not just a store submission.
+Local notifications via `expo-notifications` — scheduled on the device, no server needed, work in Expo Go and builds (not on web).
 
----
+- **Salah:** at adhan, or 10/15/20/30 min before iqamah; per-prayer switches; Jumu'ah replaces Dhuhr on Fridays. Maghrib uses each day's estimated sunset.
+- **Classes & events:** 1 hour or 1 day before, for live Muslimoon events/programs that have a date+time or a weekly day+time.
+- **Safety rules:** only live data is scheduled (never sample times/previews); a failed fetch keeps existing reminders; times are Toronto wall-clock converted per day (DST-safe).
+- **Rolling window:** 7 days of salah (≤ 40) + events (≤ 20), under iOS's 64-pending limit; re-planned on launch, on return to foreground (every 10 min max) and on settings change.
+- Code: `src/notifications/` — `schedule.ts` (pure planner, tested by `npm test`), `reminders.ts` (permissions, Android channels "Salah reminders"/"Classes & events", scheduling), `prefs.ts` (saved settings), `ReminderSync.tsx`. Screen: `app/notifications.tsx` (More → Notifications, Home bell, Home prompt).
+- Android: `SCHEDULE_EXACT_ALARM` is declared so reminders fire on the minute; Google Play asks apps using it to declare why in the Play Console (prayer-time alarms).
+- **Not yet:** push notifications for new announcements (needs a server sending pushes, e.g. Firebase Cloud Functions + Expo push tokens, and a development build on Android).
 
-## Sample content to replace before launch
+## Donations
 
-| Where | Currently | Needs |
-|---|---|---|
-| Prayer times | Live astronomical calculation (ISNA angles, standard Asr) for North York, ON, calibrated to abuhuraira.org's Sep 17 2026 schedule | Confirm the calculation method/Asr juristic school and Iqama offsets directly with AHC |
-| Hijri date | 6 Rabi' al-Thānī 1448 | Live calculation |
-| Events | Three known weekly classes | Full program list from AHC |
-| Donation amounts | $10 / $25 / $50 / $100 | Confirm with AHC |
-| Daily reflections | 100 Ayah/Hadith quotes (65/35) with Arabic + English, citations checked against sunnah.com/standard Mushaf numbering | **Arabic text was NOT verified against a Quran/hadith API** (none reachable from the dev environment) - have AHC's imam proofread every Arabic string, translation, and citation letter-for-letter before this is treated as authoritative or shown to the community |
+Config in `src/config/donations.ts` — **IRM** (irm.io):
+
+- Checkout: `https://app.irm.io/abuhuraira.org/e/checkout` (provided by AHC, 2026-10-01)
+- Currency / locale: CAD, en-CA
+
+Flow: pick cause + amount (+ name/email/phone) → confirm → open IRM checkout in the in-app browser (SFSafariViewController / Chrome Custom Tabs), so card details never touch the app.
+
+- **Pre-fill:** IRM's query parameter names aren't confirmed, so nothing is appended yet and donors choose fund + amount on IRM's page. Set `prefillParams` in `donations.ts` once IT/IRM confirm the names.
+- Donor name/email/phone are never put in the checkout URL.
+- The "mock logged-in profile" toggle is development-only (`__DEV__`) until real sign-in ships.
+
+## Blockers
+
+1. **Muslimoon data** — prayer times are live. `events`, `programs`, `articles` and `campaigns` endpoints work but are empty for AHC; the app switches to real data automatically once AHC publishes in Muslimoon (see `docs/muslimoon-api.md`). `forms` needs auth. No CORS headers, so the web build always shows samples.
+2. **IRM pre-fill parameters** — confirm with IT/IRM which query params pre-select fund and amount.
+3. **Sign-in** — real donor login (and in-app account deletion, required by Apple) still to build.
+4. **Brand book** — MasjidOps capture is in use; formal brand book still pending (see BRANDING.md).
+5. **Verified contact details** — More tab address/phone are stubs pending confirmation.
+
+## Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npx expo start` | Dev server |
+| `npm run android` / `ios` / `web` | Platform targets |
+| `npm run typecheck` | `tsc --noEmit` |
+
+## License
+
+Private / AHC use unless otherwise stated.

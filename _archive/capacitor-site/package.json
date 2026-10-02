@@ -1,0 +1,29 @@
+{
+  "name": "abu-huraira-app",
+  "version": "1.0.0",
+  "description": "A standalone, self-contained preview of the five app screens. No build step, no dependencies, no third-party branding. Upload and it works.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omarmiraf5-cpu/abu-huraira-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omarmiraf5-cpu/abu-huraira-app/issues"
+  },
+  "homepage": "https://github.com/omarmiraf5-cpu/abu-huraira-app#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.2"
+  }
+}

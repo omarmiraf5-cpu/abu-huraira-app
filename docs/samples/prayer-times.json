@@ -1,0 +1,64 @@
+{
+    "success": true,
+    "organization": {
+        "id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+        "name": "Abu Huraira Center",
+        "slug": "Abu_Huraira_Center"
+    },
+    "prayer_times": {
+        "fajr": {
+            "athan": "6:00 AM",
+            "iqamah": "5:15 AM"
+        },
+        "dhuhr": {
+            "athan": "1:30 PM",
+            "iqamah": "1:45 PM"
+        },
+        "asr": {
+            "athan": "5:00 PM",
+            "iqamah": "5:15 PM"
+        },
+        "maghrib": {
+            "athan": "Sunset",
+            "iqamah": "+5 mins"
+        },
+        "isha": {
+            "athan": "8:00 PM",
+            "iqamah": "8:15 PM"
+        },
+        "jummah1": {
+            "athan": "1:30 PM",
+            "iqamah": "2:00 PM",
+            "khateeb": null
+        },
+        "jummah2": null,
+        "jummah3": null,
+        "taraweeh": null,
+        "tahajjud": null,
+        "eid1": null,
+        "eid2": null,
+        "eid3": null,
+        "eid4": null,
+        "eid5": null,
+        "kusuf": null,
+        "khusuf": null,
+        "janazah": {
+            "available": false,
+            "date": null,
+            "time": "1:00 PM",
+            "salah_location": null,
+            "cemetery_address": null
+        }
+    },
+    "prayer_calendar_url": null,
+    "prayer_calendar_button_name": null,
+    "prayer_calendar_updated_at": null,
+    "friday_khutbahs": [],
+    "next_friday": {
+        "date": "2026-10-02",
+        "khutbahs_scheduled": 0
+    },
+    "khutbah_count": 2,
+    "last_updated": "2026-10-01T00:00:00.201295",
+    "timezone": "America/Toronto"
+}
