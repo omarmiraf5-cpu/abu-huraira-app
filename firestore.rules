@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// Every collection here is written only by Cloud Functions (via the Admin
+// SDK, which bypasses these rules entirely) — the app never talks to
+// Firestore directly. That's deliberate: device tokens and the YouTube
+// live/cache state aren't the client's business, and `announcements` is
+// written through onAnnouncementCreated's trigger, not by hand from a
+// device. Until there's an admin console with its own auth, the safest
+// default is "no client access" rather than guessing at rules now and
+// loosening them later.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { Glyph } from '@/src/components/icons/Glyph';
 import type { GlyphName } from '@/src/components/icons/glyphs';
 import { triggerHaptic } from '@/src/components/PressableScale';
 import { ReminderSync } from '@/src/notifications/ReminderSync';
+import { PushTokenSync } from '@/src/notifications/PushTokenSync';
 import { FONT_CAP, useKeyboardVisible, useResponsive } from '@/src/hooks/useResponsive';
 import { colors, fonts, gradients, layout } from '@/src/theme/tokens';
 
@@ -122,6 +123,7 @@ export default function TabLayout() {
   return (
     <>
     <ReminderSync />
+    <PushTokenSync />
     <Tabs
       tabBar={(props) => <FloatingTabBar {...props} />}
       screenOptions={{
