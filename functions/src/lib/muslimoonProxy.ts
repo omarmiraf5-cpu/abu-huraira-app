@@ -1,30 +1,31 @@
 /**
- * Proxy for Muslimoon endpoints that need authentication the client can't
- * hold (API key/token — see CLAUDE.md "Open questions"). The public,
- * unauthenticated endpoints (prayer-times, events, programs, campaigns,
- * articles) stay client-side (src/api/muslimoon.ts) — this is only for
- * `/forms`, which currently 401s without credentials nobody has yet.
+ * Proxy for Muslimoon's /forms endpoint.
  *
- * TODO once AHC/IT confirm how Muslimoon auth works: set the
- * MUSLIMOON_API_KEY secret (`firebase functions:secrets:set MUSLIMOON_API_KEY`)
- * and fill in the real auth header below — Muslimoon's docs haven't said
- * whether it's a bearer token, an API-key header, or something else.
+ * Confirmed by Sheikh Amaar (Muslimoon's founder, 2026-10-02): this is a
+ * public route — no auth, since Muslimoon doesn't have a user-login/auth
+ * flow yet. Real path, e.g.:
+ *   https://masajid.muslimoon.app/api/public/{orgId}/forms/{formId}
+ *
+ * Each form has its own id, generated when it's created in the Muslimoon
+ * CMS — there's no way to discover it from a program/event's own JSON, so
+ * whoever creates a form in the CMS has to hand over its id separately
+ * (see CLAUDE.md "Open questions").
+ *
+ * This still runs through our own Cloud Function (not called directly from
+ * the client) so the org id and base URL stay server-side and consistent
+ * with the rest of the Muslimoon integration, even though no secret is
+ * needed for the request itself.
  */
 const BASE_URL = 'https://masajid.muslimoon.app';
 const ORG_ID = 'e8a7eda8-3c55-4a9c-9b8f-9c9d37687534';
 
 export async function postMuslimoonForm(
-  formPath: string,
+  formId: string,
   payload: unknown,
-  apiKey: string,
 ): Promise<{ status: number; body: unknown }> {
-  const res = await fetch(`${BASE_URL}/v1/${ORG_ID}/forms/${formPath}`, {
+  const res = await fetch(`${BASE_URL}/api/public/${ORG_ID}/forms/${formId}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // Placeholder — confirm the real scheme with Muslimoon/AHC's IT contact.
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
   const body = await res.json().catch(() => null);

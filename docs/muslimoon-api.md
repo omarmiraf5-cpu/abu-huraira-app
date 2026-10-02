@@ -19,7 +19,7 @@ Org id: `e8a7eda8-3c55-4a9c-9b8f-9c9d37687534` (Abu Huraira Center, slug `Abu_Hu
 | `articles` | 200 | still `[]` |
 | `campaigns` | **200** | **new find** — `{ campaigns: [], categories: [] }` (sample: `docs/samples/campaigns.json`) |
 | `services` | **200** | `services: []`, `instructors: []`, 8 categories — each name appears twice (server-side duplicates; app de-dupes by name) |
-| `forms` | **401** | exists but needs auth — likely what the Muslimoon login unlocks |
+| `forms` | public | confirmed by Amaar (2026-10-02): `POST /api/public/<org>/forms/<formId>`, no auth (Muslimoon has no user-login flow yet). `formId` is per-form, handed over separately when a form is created in the CMS — not discoverable from program/event JSON. |
 | `settings` | 500 | server error |
 | `info`, `khutbahs`, `/v1/<org>` | 404 | |
 
@@ -30,6 +30,19 @@ Org id: `e8a7eda8-3c55-4a9c-9b8f-9c9d37687534` (Abu Huraira Center, slug `Abu_Hu
 - **Donate causes** — `campaigns`. Live campaigns replace the four default causes automatically. The default causes no longer show invented goal/raised figures.
 - **Services / articles** — client functions (`fetchServices`, `fetchArticles`) ready; not in the UI yet.
 - Item shapes are unknown until AHC publishes data, so the normalisers accept common field aliases (`title`/`name`, `start_date`/`date`/`starts_at`, `goal`/`goal_amount`/`target_amount`, `raised`/`amount_raised`, …). Save a real sample here once data exists and tighten the types.
+- **Why everything's still empty (Amaar, 2026-10-02):** before populating the real CMS, AHC needs
+  to sort out payment tracking with IRM — their checkout doesn't support 2-way communication, so
+  there's no way to know whether a registration/donation was actually paid. Blocks real data, not
+  the API itself. Action item: once real programs/events exist on the live site (abuhuraira.org),
+  pull a sample to firm up the normalizer types before AHC switches the CMS over, so the app
+  doesn't crash on the real shape. (Not done yet — this sandbox's network policy currently blocks
+  reaching both abuhuraira.org and masajid.muslimoon.app directly.)
+- **`announcement-bar`** (separate from the 404'ing `announcements` above) is a real, working
+  endpoint — seen live on Muslimoon's sandbox org, returning `{ success, organization, items: [{
+  message, link_text, link_type, link_url, campaign_id, display_order, is_active }] }`. Amaar is
+  activating it for AHC's org now; once confirmed working there, this can replace the
+  Firestore-based announcements plan in CLAUDE.md item 4 — a scheduled poll (same pattern as
+  `checkYoutubeLive`) instead of a hand-written Firestore doc.
 | `https://masjid.muslimoon.app/v1/<org>/…` | 404 `{"error":"Unknown org"}` | 404 same | 404 same | 404 same | 404 same |
 | `https://masajid.muslimoon.app/api/v1/<org>/…` | 404 (HTML) | 404 | 404 | 404 | 404 |
 
@@ -75,7 +88,9 @@ Notes:
 - Key is `athan` (not `adhan`). Non-clock values occur: `"Sunset"` and relative `"+5 mins"`.
   The app estimates sunset for the AHC location to place Maghrib and compute the next prayer.
 - Data oddity at time of capture: Fajr iqamah (5:15 AM) is *earlier* than Fajr athan (6:00 AM).
-  Shown as-is; worth flagging to whoever maintains AHC's schedule in Muslimoon.
+  **Update (Amaar, 2026-10-02): not a data bug** — AHC hasn't finished migrating off their old
+  CMS, so these aren't the real production prayer times yet. Re-check once the migration's done
+  rather than treating this as something to fix.
 - `?date=` query param is accepted (200) but no evidence it changes the result.
 
 ## `GET /v1/<org>/events`

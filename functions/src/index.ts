@@ -13,7 +13,6 @@ import { postMuslimoonForm } from './lib/muslimoonProxy';
 initializeApp();
 
 const YOUTUBE_API_KEY = defineSecret('YOUTUBE_API_KEY');
-const MUSLIMOON_API_KEY = defineSecret('MUSLIMOON_API_KEY');
 // Not secret — just not known at scaffold time (see CLAUDE.md open questions).
 const YOUTUBE_CHANNEL_ID = defineString('YOUTUBE_CHANNEL_ID', { default: '' });
 
@@ -120,15 +119,15 @@ export const checkYoutubeLive = onSchedule(
 );
 
 /* ------------------------------------------------------------------ */
-/* 5. Muslimoon forms proxy (auth scheme TBD — see lib/muslimoonProxy) */
+/* 5. Muslimoon forms proxy — public route, no auth (see lib/muslimoonProxy) */
 /* ------------------------------------------------------------------ */
-export const submitMuslimoonForm = onCall({ secrets: [MUSLIMOON_API_KEY] }, async (request) => {
-  const formPath = request.data?.formPath;
+export const submitMuslimoonForm = onCall(async (request) => {
+  const formId = request.data?.formId;
   const payload = request.data?.payload;
-  if (typeof formPath !== 'string' || !formPath) {
-    throw new HttpsError('invalid-argument', 'formPath is required.');
+  if (typeof formId !== 'string' || !formId) {
+    throw new HttpsError('invalid-argument', 'formId is required.');
   }
-  const { status, body } = await postMuslimoonForm(formPath, payload ?? {}, MUSLIMOON_API_KEY.value());
+  const { status, body } = await postMuslimoonForm(formId, payload ?? {});
   if (status >= 400) {
     throw new HttpsError('unknown', `Muslimoon returned HTTP ${status}`, body);
   }

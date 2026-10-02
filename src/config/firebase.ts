@@ -49,7 +49,7 @@ export async function callGetYoutubeLatest(maxResults = 10) {
   return (await fn({ maxResults })).data.videos;
 }
 
-export async function callSubmitMuslimoonForm(formPath: string, payload: unknown) {
-  const fn = httpsCallable<{ formPath: string; payload: unknown }, unknown>(functions(), 'submitMuslimoonForm');
-  return (await fn({ formPath, payload })).data;
+export async function callSubmitMuslimoonForm(formId: string, payload: unknown) {
+  const fn = httpsCallable<{ formId: string; payload: unknown }, unknown>(functions(), 'submitMuslimoonForm');
+  return (await fn({ formId, payload })).data;
 }
