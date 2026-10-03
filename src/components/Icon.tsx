@@ -56,6 +56,13 @@ const UPGRADE: Record<string, [GlyphName, boolean]> = {
   'sparkles-outline': ['sparkles', false],
   'moon-outline': ['crescent', false],
   'time-outline': ['clock', false],
+  megaphone: ['megaphone', true],
+  'megaphone-outline': ['megaphone', false],
+  'logo-youtube': ['play', true],
+  'play-circle': ['play', false],
+  'play-circle-outline': ['play', false],
+  'logo-instagram': ['instagram', true],
+  'logo-facebook': ['facebook', true],
 };
 
 type Props = {
