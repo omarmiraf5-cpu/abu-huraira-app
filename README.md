@@ -11,6 +11,7 @@ Expo (React Native) + Expo Router + TypeScript app for Abu Huraira Center.
 - Brand fonts via `expo-google-fonts` (Playfair Display display face, Inter UI face, Amiri for Arabic)
 - Icons via `@expo/vector-icons`, gradients via `expo-linear-gradient`, geometric pattern via `react-native-svg`, haptics via `expo-haptics`
 - Checkout via `expo-web-browser`
+- Backend: Firebase Cloud Functions, scaffolded in `functions/` (see `docs/firebase-backend.md`) — not deployed yet
 
 ## Sharing a preview
 
@@ -50,15 +51,18 @@ Currency: **CAD**. Timezone: **America/Toronto**.
 
 | Tab | Route | Notes |
 | --- | --- | --- |
-| Home | `app/(tabs)/index.tsx` | Dashboard: greeting, next-prayer hero, today strip, quick actions, upcoming events, donate CTA |
+| Home | `app/(tabs)/index.tsx` | Dashboard: greeting, next-prayer hero, today strip, quick actions, announcements, upcoming events, Watch live, donate CTA |
 | Prayer | `app/(tabs)/prayer.tsx` | Live Muslimoon prayer times (mock fallback), next-prayer highlight |
-| Events | `app/(tabs)/events.tsx` | Stub event cards (live endpoint exists but AHC list is empty) |
-| Donate | `app/(tabs)/donate.tsx` | 2-step flow → checkout |
-| More | `app/(tabs)/more.tsx` | About / contact stubs |
+| Events | `app/(tabs)/events.tsx` | Live events + programs; while AHC's lists are empty, a labelled preview built from abuhuraira.org (featured, This week, Classes & programs) |
+| Donate | `app/(tabs)/donate.tsx` | 2-step flow (cause, amount, frequency, details) → IRM checkout |
+| More | `app/(tabs)/more.tsx` | About, contact (CMS or website fallback), Watch (YouTube), Notifications |
+| Event detail | `app/event/[id].tsx` | Schedule, fee, audience, curriculum, registration (link or form preview), contacts |
 
 Supporting code:
 
-- `src/api/muslimoon.ts` — Muslimoon client (`/v1/<org_id>/...`); live prayer times, other calls still mocked
+- `src/api/muslimoon.ts` — Muslimoon client (`/v1/<org_id>/...`): prayer times, events/programs, announcement-bar, org-settings, campaigns, services, articles, forms (read-only); tolerant normalisers with demo fallback
+- `src/api/parse.ts` — never-throw parsing helpers (dates in many formats, time ranges); `src/data/demo/` — preview data from abuhuraira.org
+- `src/components/forms/FormRenderer.tsx` — renders Muslimoon public forms (submission off until the API is documented)
 - `src/utils/prayerTime.ts` — time parsing, Toronto-time helpers, sunset estimate
 - `docs/muslimoon-api.md`, `docs/samples/` — endpoint findings and sample responses
 - `src/config/donations.ts` — IRM checkout URL builder
@@ -66,6 +70,8 @@ Supporting code:
 - `src/components/*` — design-system components (Screen, HeroHeader, Card, Button, SectionHeader, ListGroup, TextField, EmptyState, …)
 - `src/hooks/usePrayerTimes.ts`, `src/utils/prayerSchedule.ts` — shared prayer-time loading + next-prayer logic (Home and Prayer)
 - `docs/screenshots/premium-*.png` — 390×844 web screenshots of the redesign (web shows sample prayer times because of CORS)
+- `docs/screenshots/amaar-*.png` — events preview, program detail + form, donate frequency/confirm, home, more
+- `functions/`, `firebase.json`, `firestore.rules` — Firebase backend (push notifications, YouTube, Muslimoon forms proxy); see `docs/firebase-backend.md`
 
 ## Reminders (notifications)
 
@@ -77,7 +83,7 @@ Local notifications via `expo-notifications` — scheduled on the device, no ser
 - **Rolling window:** 7 days of salah (≤ 40) + events (≤ 20), under iOS's 64-pending limit; re-planned on launch, on return to foreground (every 10 min max) and on settings change.
 - Code: `src/notifications/` — `schedule.ts` (pure planner, tested by `npm test`), `reminders.ts` (permissions, Android channels "Salah reminders"/"Classes & events", scheduling), `prefs.ts` (saved settings), `ReminderSync.tsx`. Screen: `app/notifications.tsx` (More → Notifications, Home bell, Home prompt).
 - Android: `SCHEDULE_EXACT_ALARM` is declared so reminders fire on the minute; Google Play asks apps using it to declare why in the Play Console (prayer-time alarms).
-- **Not yet:** push notifications for new announcements (needs a server sending pushes, e.g. Firebase Cloud Functions + Expo push tokens, and a development build on Android).
+- **Push notifications** (new announcements, YouTube live): scaffolded in `functions/` (Firebase Cloud Functions + Expo push tokens), device registration wired up client-side (`src/notifications/pushToken.ts`, `PushTokenSync.tsx`) — not deployed yet, needs a real Firebase project and EAS project id (see `docs/firebase-backend.md`).
 
 ## Donations
 
@@ -88,17 +94,20 @@ Config in `src/config/donations.ts` — **IRM** (irm.io):
 
 Flow: pick cause + amount (+ name/email/phone) → confirm → open IRM checkout in the in-app browser (SFSafariViewController / Chrome Custom Tabs), so card details never touch the app.
 
-- **Pre-fill:** IRM's query parameter names aren't confirmed, so nothing is appended yet and donors choose fund + amount on IRM's page. Set `prefillParams` in `donations.ts` once IT/IRM confirm the names.
-- Donor name/email/phone are never put in the checkout URL.
+- **Frequency:** One-time / Daily / Weekly / Monthly picker; shown on the confirm card.
+- **Pre-fill:** per Amaar, IRM can take name, email, amount, campaign and frequency, but the param names aren't confirmed, so every `prefillParams` entry is `null` and nothing is appended; donors confirm on IRM's page. Set the names in `donations.ts` once Amaar sends a sample link (research notes in `docs/muslimoon-api.md`).
+- Phone is never put in the URL; name/email only if IT approves setting those two params.
+- **Receipts:** IRM issues tax receipts; the app has no receipt UI.
 - The "mock logged-in profile" toggle is development-only (`__DEV__`) until real sign-in ships.
 
 ## Blockers
 
-1. **Muslimoon data** — prayer times are live. `events`, `programs`, `articles` and `campaigns` endpoints work but are empty for AHC; the app switches to real data automatically once AHC publishes in Muslimoon (see `docs/muslimoon-api.md`). `forms` needs auth. No CORS headers, so the web build always shows samples.
-2. **IRM pre-fill parameters** — confirm with IT/IRM which query params pre-select fund and amount.
+1. **Muslimoon data** — prayer times are live but **not final** (AHC is still migrating; Fajr iqamah is before athan). `events`, `programs`, `articles` and `campaigns` work but are empty; `announcement-bar` has one test item; the app switches to real data automatically (see `docs/muslimoon-api.md`). Public form submission isn't documented yet. Browsers are blocked by CORS, so the web build always shows previews.
+2. **IRM pre-fill parameters** — need a sample checkout link: param names, frequency format, campaign ids.
 3. **Sign-in** — real donor login (and in-app account deletion, required by Apple) still to build.
 4. **Brand book** — MasjidOps capture is in use; formal brand book still pending (see BRANDING.md).
-5. **Verified contact details** — More tab address/phone are stubs pending confirmation.
+5. **Contact details** — More uses abuhuraira.org's address/phone/email until AHC fills Muslimoon `org-settings` contact info.
+6. **Firebase backend** — scaffolded, not deployed; needs a real Firebase project, EAS project id, and YouTube API key/channel id (see `docs/firebase-backend.md`).
 
 ## Scripts
 
@@ -107,6 +116,7 @@ Flow: pick cause + amount (+ name/email/phone) → confirm → open IRM checkout
 | `npx expo start` | Dev server |
 | `npm run android` / `ios` / `web` | Platform targets |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm test` | Reminder planner + tolerant-parsing tests |
 
 ## License
 

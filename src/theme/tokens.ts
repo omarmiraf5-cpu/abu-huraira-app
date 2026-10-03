@@ -265,4 +265,23 @@ export const brand = {
   tagline: 'A house of worship, learning, and community',
   website: 'https://abuhuraira.org',
   email: 'info@abuhuraira.org',
+  /* Contact details from abuhuraira.org (footer + /contact), 2026-10-02.
+     Muslimoon's org-settings footer.contact_info is empty today; values from
+     there override these when present (see useStaticDetails). */
+  address: '270 Yorkland Blvd, North York, ON M2J 5C9',
+  mapsQuery: '270 Yorkland Blvd, North York, ON M2J 5C9',
+  phone: '416-752-1200',
+  /* YouTube fallback until the handle is set in Muslimoon (Settings >
+     Static Details). Verified 2026-10-02: youtube.com/abuhurairacenter
+     redirects to @AbuHurairaCenter, channel UCP9ej92hIt-X16--0_MMwPA. */
+  youtube: {
+    handle: '@AbuHurairaCenter',
+    channelUrl: 'https://www.youtube.com/@AbuHurairaCenter',
+    liveUrl: 'https://www.youtube.com/@AbuHurairaCenter/live',
+  },
+  socials: {
+    instagram: 'https://www.instagram.com/abuhurairacenter/',
+    facebook: 'https://www.facebook.com/AbuHurairaCenter/',
+    tiktok: 'https://www.tiktok.com/@abuhurairacenter',
+  },
 } as const;

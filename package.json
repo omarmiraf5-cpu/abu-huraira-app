@@ -46,7 +46,7 @@
     "lint": "tsc --noEmit",
     "share": "expo start --tunnel",
     "build:android-preview": "npx eas-cli@latest build --platform android --profile preview",
-    "test": "npx -y tsx --tsconfig tsconfig.json tests/reminders.test.ts"
+    "test": "npx -y tsx --tsconfig tsconfig.json tests/reminders.test.ts && npx -y tsx --tsconfig tsconfig.json tests/parse.test.ts"
   },
   "private": true
 }

@@ -11,10 +11,15 @@ import { SectionHeader } from '@/src/components/SectionHeader';
 import { ListGroup, ListRow } from '@/src/components/ListGroup';
 import { JewelIcon } from '@/src/components/icons/JewelIcon';
 import { useNotificationPrefs } from '@/src/notifications/prefs';
+import { useStaticDetails } from '@/src/hooks/useStaticDetails';
+import * as WebBrowser from 'expo-web-browser';
 import { brand, colors, spacing, typography } from '@/src/theme/tokens';
 
 export default function MoreScreen() {
   const { prefs } = useNotificationPrefs();
+  const details = useStaticDetails();
+  const openWeb = (url: string) =>
+    WebBrowser.openBrowserAsync(url, { controlsColor: colors.gold, toolbarColor: colors.navy, dismissButtonStyle: 'done' });
   const version = Constants.expoConfig?.version ?? '1.0.0';
   return (
     <Screen
@@ -43,8 +48,9 @@ export default function MoreScreen() {
         </View>
         <Text style={styles.body}>
           {brand.name} ({brand.shortName}) is a house of worship, learning, and
-          community serving Muslim families and neighbors. This mobile app
-          brings prayer times, events, and donations into one place.
+          community serving Muslim families and neighbors across the GTA since
+          2001. This mobile app brings prayer times, events, and donations into
+          one place.
         </Text>
       </Card>
 
@@ -62,17 +68,65 @@ export default function MoreScreen() {
         <ListRow
           icon="mail" tone="sapphire"
           title="Email us"
-          subtitle={brand.email}
-          onPress={() => Linking.openURL(`mailto:${brand.email}`)}
+          subtitle={details.email}
+          onPress={() => Linking.openURL(`mailto:${details.email}`)}
           accessibilityHint="Opens your email app"
         />
-        <ListRow icon="pin" tone="rose" title="Address" subtitle="To be confirmed" />
-        <ListRow icon="phone" tone="teal" title="Phone" subtitle="To be confirmed" />
+        <ListRow
+          icon="pin" tone="rose"
+          title="Address"
+          subtitle={details.address}
+          trailingIcon="open-outline"
+          chevron={false}
+          onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(details.address)}`)}
+          accessibilityHint="Opens maps"
+        />
+        <ListRow
+          icon="phone" tone="teal"
+          title="Call"
+          subtitle={details.phone}
+          onPress={() => Linking.openURL(`tel:${details.phone.replace(/[^\d+]/g, '')}`)}
+          accessibilityHint="Calls the masjid"
+        />
       </ListGroup>
       <Text style={styles.note}>
-        Address and phone are placeholders until verified contact details are
-        confirmed from the brand book / MasjidOps.
+        Contact details from abuhuraira.org. They’ll follow Muslimoon once AHC
+        fills in Settings › Static Details.
       </Text>
+
+      <SectionHeader title="Watch & follow" />
+      <ListGroup>
+        <ListRow
+          icon="logo-youtube" tone="rose"
+          title="Watch live"
+          subtitle="Khutbahs and classes on YouTube"
+          trailingIcon="open-outline"
+          chevron={false}
+          onPress={() => openWeb(details.youtubeLiveUrl)}
+          accessibilityHint="Opens AHC’s YouTube live stream"
+        />
+        <ListRow
+          icon="play-circle" tone="slate"
+          title="YouTube channel"
+          subtitle={brand.youtube.handle}
+          onPress={() => openWeb(details.youtubeChannelUrl)}
+          accessibilityHint="Opens AHC’s YouTube channel"
+        />
+        <ListRow
+          icon="logo-instagram" tone="violet"
+          title="Instagram"
+          subtitle="@abuhurairacenter"
+          onPress={() => openWeb(brand.socials.instagram)}
+          accessibilityHint="Opens AHC’s Instagram"
+        />
+        <ListRow
+          icon="logo-facebook" tone="sapphire"
+          title="Facebook"
+          subtitle="Abu Huraira Center"
+          onPress={() => openWeb(brand.socials.facebook)}
+          accessibilityHint="Opens AHC’s Facebook page"
+        />
+      </ListGroup>
 
       <SectionHeader title="Explore" />
       <ListGroup>

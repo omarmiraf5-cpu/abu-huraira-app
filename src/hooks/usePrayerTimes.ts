@@ -20,6 +20,11 @@ function useMinuteTick() {
 /**
  * Live Muslimoon prayer times (with the built-in sample fallback from
  * fetchPrayerTimes), resolved against the current Toronto wall-clock.
+ *
+ * NOTE: Muslimoon's AHC prayer times are not final yet (Amaar, 2026-10-02:
+ * not migrated from the old CMS). Behaviour is intentionally unchanged; the
+ * real times will flow through this hook once Muslimoon is updated. See
+ * fetchPrayerTimes() and docs/muslimoon-api.md.
  */
 export function usePrayerTimes() {
   const [data, setData] = useState<PrayerTimesResult | null>(null);

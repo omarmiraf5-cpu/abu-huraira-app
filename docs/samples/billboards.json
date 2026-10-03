@@ -1,0 +1,16 @@
+{
+    "success": true,
+    "organization": {
+        "id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+        "name": "Abu Huraira Center",
+        "slug": "Abu_Huraira_Center"
+    },
+    "display_settings": {
+        "background_mode": "graphic",
+        "video_provider": null,
+        "video_id": null,
+        "video_url": null,
+        "mobile_poster_url": null
+    },
+    "billboards": []
+}

@@ -1,0 +1,52 @@
+{
+  "_comment": "DEMO DATA. Real shape from GET /v1/<org>/announcement-bar (id, org_id, message, link_text, link_type, link_url, campaign_id, display_order, is_active, created_at, updated_at). Content from abuhuraira.org 'Community Announcements' (/data/community-announcements.json) on 2026-10-02. The optional title/category/subtitle fields are extras the app shows when present.",
+  "success": true,
+  "organization": { "id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534", "name": "Abu Huraira Center", "slug": "Abu_Huraira_Center" },
+  "items": [
+    {
+      "id": "demo-ann-iqra-2026",
+      "org_id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+      "title": "Iqra Evening Quran School",
+      "category": "Education",
+      "message": "Registration is open: ages 5+, boys and girls, in person and online. Mon & Wed or Tue & Thu, 6:00 to 8:00 PM. $80/month.",
+      "link_text": "Register",
+      "link_type": "external",
+      "link_url": "https://form.jotform.com/262278710261253",
+      "campaign_id": null,
+      "display_order": 0,
+      "is_active": true,
+      "created_at": "2026-09-01T14:00:00.000000+00:00",
+      "updated_at": "2026-09-01T14:00:00.000000+00:00"
+    },
+    {
+      "id": "demo-ann-girls-hifdh-2026",
+      "org_id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+      "title": "Girls Weekend Hifdh 2026",
+      "category": "Education",
+      "message": "Quran memorization and Tajweed for girls 9+. Saturdays and Sundays, 10:00 AM to 2:00 PM. $110/month.",
+      "link_text": "Register",
+      "link_type": "external",
+      "link_url": "https://form.jotform.com/262278187931265",
+      "campaign_id": null,
+      "display_order": 1,
+      "is_active": true,
+      "created_at": "2026-09-01T14:05:00.000000+00:00",
+      "updated_at": "2026-09-01T14:05:00.000000+00:00"
+    },
+    {
+      "id": "demo-ann-weekend-school-2026",
+      "org_id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+      "title": "AHC Weekend School",
+      "category": "Education",
+      "message": "SK to Grade 10: Quran, Islamic Studies, Salah and du’aa, plus field trips. Weekends, 10:00 AM to 2:00 PM. $90/month.",
+      "link_text": "Register",
+      "link_type": "external",
+      "link_url": "https://form.jotform.com/261394591096264",
+      "campaign_id": null,
+      "display_order": 2,
+      "is_active": true,
+      "created_at": "2026-09-01T14:10:00.000000+00:00",
+      "updated_at": "2026-09-01T14:10:00.000000+00:00"
+    }
+  ]
+}

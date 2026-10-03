@@ -1,0 +1,24 @@
+{
+  "_comment": "DEMO DATA. A guess at GET /api/public/<org>/forms/<form_id> (the real route exists but returned {\"error\":\"Form not found\"} for every id we tried). Questions mirror what the Iqra registration asks on abuhuraira.org. Used only to preview the in-app form renderer; submission stays off.",
+  "success": true,
+  "form": {
+    "id": "demo-iqra-registration",
+    "org_id": "e8a7eda8-3c55-4a9c-9b8f-9c9d37687534",
+    "title": "Iqra Evening Quran School: Registration",
+    "description": "One form per student. AHC will confirm your child’s stream by email.",
+    "submit_button_text": "Register",
+    "is_active": true,
+    "fields": [
+      { "id": "student_name", "label": "Student’s full name", "type": "short_text", "required": true, "placeholder": "First and last name" },
+      { "id": "student_age", "label": "Student’s age", "type": "number", "required": true, "placeholder": "5 to 17" },
+      { "id": "stream", "label": "Stream", "type": "radio", "required": true, "options": ["Mon & Wed", "Tue & Thu"] },
+      { "id": "format", "label": "Format", "type": "dropdown", "required": true, "options": [{ "label": "In person", "value": "in_person" }, { "label": "Online", "value": "online" }] },
+      { "id": "parent_name", "name": "parent_name", "title": "Parent or guardian", "type": "text", "required": true },
+      { "id": "parent_email", "label": "Email", "type": "email", "required": true, "placeholder": "you@example.com" },
+      { "id": "parent_phone", "label": "Phone", "type": "phone", "required": false },
+      { "id": "level", "label": "Current level", "type": "select", "required": false, "options": ["Beginner (Noorani Qaida)", "Can read slowly", "Reads fluently"] },
+      { "id": "notes", "label": "Anything we should know?", "type": "paragraph", "required": false },
+      { "id": "consent", "label": "I agree to AHC’s program policies", "type": "checkbox", "required": true }
+    ]
+  }
+}

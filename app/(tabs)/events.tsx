@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { router } from 'expo-router';
 import { ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
 import { Screen } from '@/src/components/Screen';
 import { HeroHeader } from '@/src/components/HeroHeader';
@@ -35,7 +36,13 @@ export default function EventsScreen() {
     load();
   }, [load]);
 
-  const [featured, ...rest] = events;
+  // Dated events first (featured = the soonest), then classes & programs.
+  const dated = events.filter((e) => e.kind !== 'class');
+  const classes = events.filter((e) => e.kind === 'class');
+  const featured = dated[0] ?? classes[0];
+  const rest = dated.filter((e) => e !== featured);
+  const programs = classes.filter((e) => e !== featured);
+  const open = (e: EventItem) => router.push({ pathname: '/event/[id]', params: { id: e.id } });
 
   return (
     <Screen
@@ -72,21 +79,32 @@ export default function EventsScreen() {
               <View style={styles.noticeRow}>
                 <Icon name="information-circle-outline" size={18} color={colors.nur} />
                 <Text style={styles.noticeText}>
-                  <Text style={styles.noticeStrong}>Preview schedule. </Text>
-                  AHC hasn’t published events yet — these samples show how they’ll appear.
+                  <Text style={styles.noticeStrong}>Preview from abuhuraira.org. </Text>
+                  AHC hasn’t published classes or events in the app yet. These come from the website to show how they’ll appear; check details before attending.
                 </Text>
               </View>
             </Card>
           ) : null}
 
-          {featured ? <EventCard event={featured} variant="featured" /> : null}
+          {featured ? <EventCard event={featured} variant="featured" onPress={() => open(featured)} /> : null}
 
           {rest.length > 0 ? (
             <>
-              <SectionHeader title="More events" eyebrow={`${rest.length} upcoming`} />
+              <SectionHeader title={sample ? 'This week at AHC' : 'More events'} eyebrow={`${rest.length} upcoming`} />
               <View style={styles.list}>
                 {rest.map((event) => (
-                  <EventCard key={event.id} event={event} variant="row" />
+                  <EventCard key={event.id} event={event} variant="row" onPress={() => open(event)} />
+                ))}
+              </View>
+            </>
+          ) : null}
+
+          {programs.length > 0 ? (
+            <>
+              <SectionHeader title="Classes & programs" eyebrow={`${programs.length} ${programs.length === 1 ? 'program' : 'programs'}`} />
+              <View style={styles.list}>
+                {programs.map((event) => (
+                  <EventCard key={event.id} event={event} variant="row" onPress={() => open(event)} />
                 ))}
               </View>
             </>

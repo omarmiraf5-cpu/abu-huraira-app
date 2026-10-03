@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import type { EventItem } from '@/src/api/muslimoon';
 import { eventDateBadge, eventIcon } from '@/src/utils/events';
 import { Card } from './Card';
+import { Badge } from './Badge';
+import { PressableScale } from './PressableScale';
 import { GeometricPattern } from './GeometricPattern';
 import { Icon, type IconName } from './Icon';
 import { colors, elevation, gradients, radii, spacing, typography } from '@/src/theme/tokens';
@@ -83,8 +85,24 @@ export function EventCard({ event, variant = 'row', style, onPress }: Props) {
           <Text style={styles.rowTitle}>{event.title}</Text>
           {when ? <Meta icon="time-outline" text={when} /> : null}
           {event.location ? <Meta icon="location-outline" text={event.location} /> : null}
-          {event.description ? <Text style={styles.description}>{event.description}</Text> : null}
+          {event.instructor ? <Meta icon="person-outline" text={event.instructor} /> : null}
+          {event.description ? (
+            <Text style={styles.description} numberOfLines={3}>
+              {event.description}
+            </Text>
+          ) : null}
+          {event.fee || event.registration?.required || event.audience ? (
+            <View style={styles.chips}>
+              {event.fee ? <Badge label={event.fee} tone={/^free/i.test(event.fee) ? 'success' : 'gold'} /> : null}
+              {event.registration?.closed ? (
+                <Badge label="Registration closed" tone="neutral" />
+              ) : event.registration?.required ? (
+                <Badge label="Registration" tone="neutral" icon="create-outline" />
+              ) : null}
+            </View>
+          ) : null}
         </View>
+        {onPress ? <Icon name="chevron-forward" size={16} color={colors.textTertiary} style={styles.chevron} /> : null}
       </View>
     </Card>
   );
@@ -96,8 +114,16 @@ function FeaturedEvent({ event, style, onPress }: Omit<Props, 'variant'>) {
     const { width, height } = e.nativeEvent.layout;
     if (Math.abs(width - size.width) > 1 || Math.abs(height - size.height) > 1) setSize({ width, height });
   };
+  const Wrapper = onPress ? PressableScale : View;
   return (
-    <View style={[styles.featured, style]} onLayout={onLayout} accessible accessibilityLabel={`Featured: ${a11yLabel(event)}`}>
+    <Wrapper
+      style={[styles.featured, style]}
+      onLayout={onLayout}
+      accessible
+      accessibilityRole={onPress ? 'button' : undefined}
+      accessibilityLabel={`Featured: ${a11yLabel(event)}`}
+      {...(onPress ? { onPress, scaleTo: 0.985 } : {})}
+    >
       <LinearGradient
         colors={gradients.plate}
         start={{ x: 0, y: 0 }}
@@ -122,9 +148,10 @@ function FeaturedEvent({ event, style, onPress }: Omit<Props, 'variant'>) {
         <View style={styles.featuredMeta}>
           {event.time ? <Meta icon="time-outline" text={[event.date, event.time].join(' · ')} /> : null}
           {event.location ? <Meta icon="location-outline" text={event.location} /> : null}
+          {event.instructor ? <Meta icon="person-outline" text={event.instructor} /> : null}
         </View>
       </View>
-    </View>
+    </Wrapper>
   );
 }
 
@@ -158,6 +185,8 @@ const styles = StyleSheet.create({
   rowBody: { flex: 1 },
   rowTitle: { ...typography.headline, fontSize: 17, color: colors.text },
   description: { ...typography.subhead, color: colors.textSecondary, marginTop: spacing.sm },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginTop: spacing.ms },
+  chevron: { alignSelf: 'center' },
   featured: {
     borderRadius: radii.xl,
     backgroundColor: colors.surfaceRaised,

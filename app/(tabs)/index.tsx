@@ -12,6 +12,8 @@ import { ProgressBar } from '@/src/components/ProgressBar';
 import { PressableScale } from '@/src/components/PressableScale';
 import { EmptyState } from '@/src/components/EmptyState';
 import { EventCard } from '@/src/components/EventCard';
+import { AnnouncementCard } from '@/src/components/AnnouncementCard';
+import { WatchLiveCard } from '@/src/components/WatchLiveCard';
 import { Icon, type IconName } from '@/src/components/Icon';
 import { NextPrayerHero } from '@/src/components/prayer/NextPrayerHero';
 import { prayerIcon, prayerTone } from '@/src/components/prayer/prayerIcons';
@@ -20,8 +22,10 @@ import { usePrayerTimes } from '@/src/hooks/usePrayerTimes';
 import { FONT_CAP } from '@/src/hooks/useResponsive';
 import { useNotificationPrefs } from '@/src/notifications/prefs';
 import {
+  fetchAnnouncementsResult,
   fetchCampaigns,
   fetchEventsResult,
+  type Announcement,
   type Campaign,
   type EventItem,
 } from '@/src/api/muslimoon';
@@ -55,6 +59,8 @@ export default function HomeScreen() {
   const [events, setEvents] = useState<EventItem[] | null>(null);
   const [eventsSample, setEventsSample] = useState(false);
   const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [announcementsSample, setAnnouncementsSample] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -67,6 +73,13 @@ export default function HomeScreen() {
       .catch(() => alive && setEvents([]));
     fetchCampaigns()
       .then((list) => alive && setCampaign(list.find((c) => c.id === 'dollar-a-day') ?? list[0] ?? null))
+      .catch(() => undefined);
+    fetchAnnouncementsResult()
+      .then((r) => {
+        if (!alive) return;
+        setAnnouncements(r.items);
+        setAnnouncementsSample(r.source === 'sample');
+      })
       .catch(() => undefined);
     return () => {
       alive = false;
@@ -228,6 +241,18 @@ export default function HomeScreen() {
         ))}
       </View>
 
+      {/* Announcements — Muslimoon announcement-bar (website preview when empty) */}
+      {announcements.length > 0 ? (
+        <>
+          <SectionHeader title="Announcements" eyebrow={announcementsSample ? 'Preview' : undefined} />
+          <View style={styles.announcements}>
+            {announcements.slice(0, 3).map((a) => (
+              <AnnouncementCard key={a.id} item={a} />
+            ))}
+          </View>
+        </>
+      ) : null}
+
       {/* Upcoming events */}
       <SectionHeader
         title="Upcoming at AHC"
@@ -256,10 +281,15 @@ export default function HomeScreen() {
           snapToAlignment="start"
         >
           {events.map((e) => (
-            <EventCard key={e.id} event={e} variant="compact" onPress={() => router.push('/(tabs)/events')} />
+            <EventCard key={e.id} event={e} variant="compact" onPress={() => router.push({ pathname: '/event/[id]', params: { id: e.id } })} />
           ))}
         </ScrollView>
       )}
+
+      {/* Watch live (YouTube) */}
+      <View style={styles.watch}>
+        <WatchLiveCard />
+      </View>
 
       {/* Donate CTA */}
       <SectionHeader title="Support your masjid" />
@@ -396,6 +426,8 @@ const styles = StyleSheet.create({
   },
   actionLabel: { ...typography.caption, fontSize: 12.5, color: colors.text, letterSpacing: 0.1 },
   carousel: { marginHorizontal: -layout.gutter, overflow: 'visible' },
+  announcements: { gap: spacing.ms },
+  watch: { marginTop: spacing.md },
   carouselContent: { paddingHorizontal: layout.gutter, gap: spacing.ms, paddingBottom: spacing.sm },
   donateTop: { flexDirection: 'row', gap: spacing.md, alignItems: 'center' },
   donateTitles: { flex: 1 },

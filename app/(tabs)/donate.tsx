@@ -21,9 +21,11 @@ import {
 } from '@/src/api/muslimoon';
 import {
   SUGGESTED_AMOUNTS,
+  FREQUENCIES,
   buildCheckoutUrl,
   CHECKOUT_PREFILLS,
   donationsConfig,
+  type DonationFrequency,
 } from '@/src/config/donations';
 import { colors, locale, radii, spacing, typography } from '@/src/theme/tokens';
 
@@ -66,6 +68,7 @@ export default function DonateScreen() {
   const [campaignId, setCampaignId] = useState('dollar-a-day');
   const [amount, setAmount] = useState<number>(50);
   const [customAmount, setCustomAmount] = useState('');
+  const [frequency, setFrequency] = useState<DonationFrequency>('once');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -95,6 +98,7 @@ export default function DonateScreen() {
   const effectiveAmount = customAmount
     ? Number.parseFloat(customAmount) || 0
     : amount;
+  const freq = FREQUENCIES.find((f) => f.key === frequency) ?? FREQUENCIES[0];
 
   const donor = loggedIn
     ? MOCK_USER
@@ -121,15 +125,21 @@ export default function DonateScreen() {
       await createPledge({
         campaignId,
         amount: effectiveAmount,
+        frequency,
         name: donor.name,
         email: donor.email,
         phone: donor.phone || undefined,
       });
 
+      // Hands IRM: name, email, amount, campaign, frequency — each only once
+      // its query-param name is confirmed in src/config/donations.ts.
       const url = buildCheckoutUrl({
         amount: effectiveAmount,
+        frequency,
         campaign: selectedCampaign?.name,
         campaignId,
+        name: donor.name,
+        email: donor.email,
       });
 
       // Opens AHC's IRM checkout in the in-app browser (SFSafariViewController /
@@ -144,7 +154,7 @@ export default function DonateScreen() {
     } finally {
       setSubmitting(false);
     }
-  }, [campaignId, donor, effectiveAmount, selectedCampaign?.name]);
+  }, [campaignId, donor, effectiveAmount, frequency, selectedCampaign?.name]);
 
   return (
     <Screen
@@ -247,6 +257,14 @@ export default function DonateScreen() {
             />
           </View>
 
+          <SectionHeader title="How often" eyebrow={frequency === 'once' ? 'One-time gift' : 'Recurring gift'} />
+          <FrequencyPicker value={frequency} onChange={setFrequency} />
+          {frequency !== 'once' ? (
+            <Text style={styles.freqHint} maxFontSizeMultiplier={FONT_CAP.body}>
+              {money(effectiveAmount || 0, effectiveAmount % 1 ? 2 : 0)} {freq.per}, set up and managed on AHC’s IRM checkout.
+            </Text>
+          ) : null}
+
           <SectionHeader title="Your details" />
           <Card padding={spacing.md}>
             {SHOW_MOCK_LOGIN ? (
@@ -316,7 +334,7 @@ export default function DonateScreen() {
           {error ? <ErrorText text={error} /> : null}
 
           <Button
-            label={effectiveAmount > 0 ? `Continue · ${money(effectiveAmount, effectiveAmount % 1 ? 2 : 0)}` : 'Continue'}
+            label={effectiveAmount > 0 ? `Continue · ${money(effectiveAmount, effectiveAmount % 1 ? 2 : 0)}${freq.per ? ` ${freq.per}` : ''}` : 'Continue'}
             trailingIcon="arrow-forward"
             onPress={onContinue}
             disabled={!canContinue}
@@ -336,6 +354,7 @@ export default function DonateScreen() {
                 {locale.currencySymbol}
                 {effectiveAmount.toFixed(2)}
               </Text>
+              {freq.per ? <Text style={styles.receiptPer}>{freq.label.toLowerCase()} gift</Text> : null}
               <Badge label={selectedCampaign?.name ?? '—'} tone="gold" icon={CAMPAIGN_ICONS[campaignId] ?? 'heart-outline'} style={styles.receiptBadge} />
             </View>
             <View style={styles.perforation} />
@@ -346,6 +365,7 @@ export default function DonateScreen() {
                 label="Amount"
                 value={`${locale.currencySymbol}${effectiveAmount.toFixed(2)} ${locale.currency}`}
               />
+              <ConfirmRow label="Frequency" value={freq.label} />
               <ConfirmRow label="Name" value={donor.name} />
               <ConfirmRow label="Email" value={donor.email} />
               {donor.phone ? (
@@ -375,7 +395,7 @@ export default function DonateScreen() {
             <Text style={styles.fineprint}>
               {CHECKOUT_PREFILLS
                 ? `Payment is completed securely on AHC’s checkout (${donationsConfig.displayHost}).`
-                : `You’ll confirm the fund and amount and pay securely on AHC’s checkout (${donationsConfig.displayHost}).`}
+                : `You’ll confirm the fund, amount${frequency !== 'once' ? ' and schedule' : ''} and pay securely on AHC’s checkout (${donationsConfig.displayHost}).`}
             </Text>
           </View>
         </View>
@@ -408,6 +428,36 @@ function Stepper({ step }: { step: Step }) {
               <Text style={[styles.stepText, (active || done) && styles.stepTextOn]}>{it.label}</Text>
             </View>
           </View>
+        );
+      })}
+    </View>
+  );
+}
+
+/** One-time / Daily / Weekly / Monthly — a segmented control on a sunken track. */
+function FrequencyPicker({ value, onChange }: { value: DonationFrequency; onChange: (f: DonationFrequency) => void }) {
+  return (
+    <View style={styles.freqTrack} accessibilityRole="radiogroup" accessibilityLabel="Donation frequency">
+      {FREQUENCIES.map((f) => {
+        const selected = f.key === value;
+        return (
+          <PressableScale
+            key={f.key}
+            onPress={() => onChange(f.key)}
+            accessibilityRole="radio"
+            accessibilityState={{ selected, checked: selected }}
+            accessibilityLabel={f.label}
+            style={[styles.freqOption, selected && styles.freqOptionOn]}
+          >
+            <Text
+              style={[styles.freqText, selected && styles.freqTextOn]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              maxFontSizeMultiplier={FONT_CAP.dense}
+            >
+              {f.label}
+            </Text>
+          </PressableScale>
         );
       })}
     </View>
@@ -500,6 +550,32 @@ const styles = StyleSheet.create({
   amountText: { ...typography.numeric, fontSize: 16, color: colors.text },
   amountTextSelected: { color: colors.textOnGold, fontFamily: typography.numericLarge.fontFamily },
   customWrap: { marginTop: spacing.ms },
+  /* Frequency */
+  freqTrack: {
+    flexDirection: 'row',
+    padding: 4,
+    gap: 4,
+    borderRadius: radii.pill,
+    backgroundColor: colors.surfaceSunken,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  freqOption: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: 44,
+    paddingHorizontal: 4,
+    borderRadius: radii.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  freqOptionOn: {
+    backgroundColor: colors.gold,
+    boxShadow: '0px 4px 14px rgba(244, 148, 27, 0.35)',
+  },
+  freqText: { ...typography.subhead, fontFamily: typography.headline.fontFamily, color: colors.textSecondary },
+  freqTextOn: { color: colors.textOnGold },
+  freqHint: { ...typography.caption, color: colors.textTertiary, marginTop: spacing.sm, paddingHorizontal: spacing.xs },
   /* Details */
   switchRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.ms },
   switchLabel: { ...typography.subhead, fontFamily: typography.headline.fontFamily, color: colors.text },
@@ -547,6 +623,7 @@ const styles = StyleSheet.create({
   receiptEyebrow: { ...typography.overline, color: colors.nur },
   receiptAmount: { ...typography.numericLarge, fontSize: 48, lineHeight: 56, color: colors.text, marginTop: spacing.xs },
   receiptBadge: { alignSelf: 'center', marginTop: spacing.sm },
+  receiptPer: { ...typography.footnote, color: colors.textSecondary, marginTop: 2 },
   perforation: {
     marginHorizontal: spacing.ml,
     borderTopWidth: 1,
