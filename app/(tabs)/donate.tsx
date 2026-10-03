@@ -131,12 +131,12 @@ export default function DonateScreen() {
         phone: donor.phone || undefined,
       });
 
-      // Hands IRM: name, email, amount, campaign, frequency — each only once
-      // its query-param name is confirmed in src/config/donations.ts.
+      // Builds realm/<campaign-slug>/<amount>/<frequency> (confirmed working);
+      // name/email are appended only once their query-param names are
+      // confirmed in src/config/donations.ts.
       const url = buildCheckoutUrl({
         amount: effectiveAmount,
         frequency,
-        campaign: selectedCampaign?.name,
         campaignId,
         name: donor.name,
         email: donor.email,

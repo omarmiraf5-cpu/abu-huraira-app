@@ -4,32 +4,23 @@
  * Receipts: IRM issues tax receipts. The app collects nothing for receipts and
  * shows no receipt UI (Amaar, Muslimoon, 2026-10-02).
  *
- * What we may pass to IRM (Amaar, 2026-10-02): donor name, email, amount,
- * campaign (already created on the IRM dashboard) and frequency (probably
- * d/w/m for daily/weekly/monthly). We do NOT yet have a sample checkout link,
- * so the base URL and every query-parameter name below are PLACEHOLDERS.
+ * Checkout URL format — CONFIRMED working on-device, 2026-10-03:
+ *   https://app.irm.io/<realm>/<campaign-slug>/<amount>/<frequency>
+ * e.g. https://app.irm.io/abuhuraira.org/masjid-operation/50/once
  *
- *   ┌──────────────────────────────────────────────────────────────────────┐
- *   │ PLACEHOLDER until Amaar sends a sample IRM link:                      │
- *   │   - checkoutUrl            (AHC gave .../e/checkout on 2026-10-01)    │
- *   │   - prefillParams.*        (all null → nothing is appended)           │
- *   │   - frequencyCodes         (d / w / m per Amaar's "probably")         │
- *   │   - irmCampaigns           (slugs seen on abuhuraira.org/donate)      │
- *   └──────────────────────────────────────────────────────────────────────┘
+ * The bare realm root (no slug/amount/frequency) still works and lets the
+ * donor pick a campaign and amount on IRM's own page — used as the fallback
+ * for causes with no known IRM slug yet (e.g. "Dollar a Day"). The old
+ * `.../e/checkout` link AHC originally gave (2026-10-01) does NOT work on its
+ * own — it renders a blank page with nothing to check out, since it has no
+ * campaign/amount attached.
  *
- * Until a param name is set it is simply not sent, so today the donor confirms
- * cause, amount and frequency on IRM's own page. Setting a name turns that
- * field on — no screen changes needed.
+ * Still unconfirmed: whether IRM accepts donor name/email as query params
+ * (Amaar said conceptually yes, exact param names unknown) — `prefillParams`
+ * stays empty until that's nailed down.
  *
- * Privacy: name/email in a URL end up in browser history and server logs.
- * They're included only because IRM can take them and Amaar listed them; leave
- * `prefillParams.name/email` null if IT prefers donors to type them on IRM.
- *
- * Research notes (public IRM page JS, 2026-10-02 — unconfirmed, NOT enabled):
- * IRM campaign pages live at https://app.irm.io/abuhuraira.org/<campaign-slug>
- * and accept /<slug>/<amount>/<frequency> path segments and ?a=<amount>&f=<frequency>
- * query params, where frequency is matched against the campaign's own option
- * labels (e.g. "Monthly"). See docs/muslimoon-api.md → "Donations / IRM".
+ * Privacy: name/email in a URL end up in browser history and server logs —
+ * leave `prefillParams.name`/`email` null unless IT approves sending them.
  */
 
 export type DonationFrequency = 'once' | 'daily' | 'weekly' | 'monthly';
@@ -41,41 +32,27 @@ export const FREQUENCIES: { key: DonationFrequency; label: string; short: string
   { key: 'monthly', label: 'Monthly', short: 'Monthly', per: '/ month' },
 ];
 
-type PrefillKey = 'name' | 'email' | 'amount' | 'campaign' | 'frequency';
+type PrefillKey = 'name' | 'email';
 
 export const donationsConfig = {
   provider: 'IRM',
-  /** PLACEHOLDER — checkout link provided by AHC (Sheikh Amaar, 2026-10-01). Confirm with a sample link. */
-  checkoutUrl: 'https://app.irm.io/abuhuraira.org/e/checkout',
+  /** IRM "realm" root for AHC — confirmed working 2026-10-03. */
+  realmUrl: 'https://app.irm.io/abuhuraira.org',
   /** Display host shown to donors before they leave the app. */
   displayHost: 'app.irm.io',
   currency: 'CAD',
   locale: 'en-CA',
   /**
-   * PLACEHOLDER query-parameter names IRM accepts for pre-filling.
-   * null = not confirmed → not sent. e.g. { amount: 'amount', frequency: 'frequency', ... }
+   * PLACEHOLDER query-parameter names IRM accepts for pre-filling donor
+   * details. null = not confirmed → not sent.
    */
   prefillParams: {
     name: null,
     email: null,
-    amount: null,
-    campaign: null,
-    frequency: null,
   } as Record<PrefillKey, string | null>,
   /**
-   * PLACEHOLDER frequency codes (Amaar: "probably d/w/m"). One-time sends no
-   * frequency param (null) unless IRM wants an explicit code.
-   */
-  frequencyCodes: {
-    once: null,
-    daily: 'd',
-    weekly: 'w',
-    monthly: 'm',
-  } as Record<DonationFrequency, string | null>,
-  /**
-   * PLACEHOLDER app cause id → IRM campaign identifier. Values are the
-   * campaign slugs linked from abuhuraira.org/donate (2026-10-02); confirm the
-   * identifier IRM expects in the checkout link. null = let the donor choose on IRM.
+   * App cause id → IRM campaign slug (path segment, confirmed format).
+   * null = no known slug yet — falls back to the realm root.
    */
   irmCampaigns: {
     general: 'masjid-operation',
@@ -91,8 +68,6 @@ export type CheckoutParams = {
   frequency?: DonationFrequency;
   /** App cause id (mapped through irmCampaigns) */
   campaignId?: string;
-  /** Cause display name (used only if a campaign has no IRM mapping and IRM accepts names) */
-  campaign?: string;
   name?: string;
   email?: string;
 };
@@ -100,27 +75,25 @@ export type CheckoutParams = {
 /** True once at least one pre-fill parameter is configured. */
 export const CHECKOUT_PREFILLS = Object.values(donationsConfig.prefillParams).some(Boolean);
 
-/** The values that would be handed to IRM, before param-name mapping (for review / debugging). */
-export function checkoutHandoff(params: CheckoutParams) {
-  const freq = params.frequency ?? 'once';
-  return {
-    name: params.name?.trim() || undefined,
-    email: params.email?.trim() || undefined,
-    amount: params.amount > 0 ? params.amount : undefined,
-    campaign: (params.campaignId && donationsConfig.irmCampaigns[params.campaignId]) || undefined,
-    frequency: donationsConfig.frequencyCodes[freq] ?? undefined,
-  } satisfies Record<PrefillKey, string | number | undefined>;
-}
-
-/** Build the IRM checkout URL, appending only the fields whose param names are confirmed. */
+/**
+ * Build the IRM checkout URL: realm/<campaign-slug>/<amount>/<frequency>
+ * when the cause has a known IRM slug and a positive amount, otherwise the
+ * realm root (donor picks a campaign and amount on IRM's page). Donor
+ * name/email are appended as query params only once their param names are
+ * confirmed.
+ */
 export function buildCheckoutUrl(params: CheckoutParams): string {
-  const url = new URL(donationsConfig.checkoutUrl);
-  const values = checkoutHandoff(params);
-  (Object.keys(values) as PrefillKey[]).forEach((k) => {
-    const name = donationsConfig.prefillParams[k];
-    const v = values[k];
-    if (name && v !== undefined && v !== '') url.searchParams.set(name, String(v));
-  });
+  const freq = params.frequency ?? 'once';
+  const slug = params.campaignId ? donationsConfig.irmCampaigns[params.campaignId] : undefined;
+  const base =
+    slug && params.amount > 0
+      ? `${donationsConfig.realmUrl}/${slug}/${params.amount}/${freq}`
+      : donationsConfig.realmUrl;
+  const url = new URL(base);
+  const nameParam = donationsConfig.prefillParams.name;
+  const emailParam = donationsConfig.prefillParams.email;
+  if (nameParam && params.name?.trim()) url.searchParams.set(nameParam, params.name.trim());
+  if (emailParam && params.email?.trim()) url.searchParams.set(emailParam, params.email.trim());
   return url.toString();
 }
 

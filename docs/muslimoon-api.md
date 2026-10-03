@@ -119,9 +119,9 @@ Rules: demo data appears only while both `events` and `programs` are empty (or u
 Config: `src/config/donations.ts`. IRM issues tax receipts, so the app has no receipt UI or copy.
 
 - Donate collects cause, amount, **frequency** (One-time / Daily / Weekly / Monthly), name and email, and passes them to `buildCheckoutUrl()`.
-- **Everything is a placeholder until Amaar sends a sample checkout link.** `checkoutUrl` = `https://app.irm.io/abuhuraira.org/e/checkout`. Every `prefillParams.*` is `null`, so **nothing is appended** and the donor confirms on IRM's page. `frequencyCodes` = d / w / m ("probably", per Amaar). `irmCampaigns` maps general → `masjid-operation`, zakat → `zakat-al-maal`, sadaqah → `sadaqah`, Dollar a Day → unknown, plus `automate-your-jummah`.
-- Privacy: name/email in a URL end up in history and logs. Leave those two params `null` unless IT approves.
-- Research (IRM's public page JavaScript, unconfirmed, **not enabled**): campaign pages are `app.irm.io/abuhuraira.org/<campaign>`. Routes include `:realm/:campaign/:amount/:frequency[/:duration]`, `:realm/e/checkout` and `:realm/cart`. Query params read: `a` (amount), `f` (frequency), `d` (duration), `n`/`note`, `r`/`return_url`. Frequency appears to be matched case-insensitively against the campaign's own option labels (e.g. "Monthly"), **not** d/w/m. No name/email prefill params were found.
+- **CONFIRMED working, 2026-10-03 (tested on device):** `https://app.irm.io/<realm>/<campaign-slug>/<amount>/<frequency>`, e.g. `https://app.irm.io/abuhuraira.org/masjid-operation/50/once`, loads a real checkout. The originally-given `.../e/checkout` link (AHC, 2026-10-01) does **not** work alone — no campaign/amount attached, so IRM has nothing to render and shows a blank page. `realmUrl` = `https://app.irm.io/abuhuraira.org`; `irmCampaigns` maps general → `masjid-operation`, zakat → `zakat-al-maal`, sadaqah → `sadaqah`, Dollar a Day → unknown (falls back to the realm root), plus `automate-your-jummah`. `frequency` is sent as the plain lowercase label (`once`/`daily`/`weekly`/`monthly`) directly as the path segment — not a `d`/`w`/`m` code as originally guessed.
+- Still unconfirmed: the real IRM slug for every cause (only scraped from abuhuraira.org's donate page, not confirmed with Amaar/IT), a slug for "Dollar a Day", whether `/frequency` alone sets up a recurring charge or needs something else, and the query-param names for donor name/email (`prefillParams.name`/`email` stay `null` — nothing appended; donor confirms those on IRM's page). Privacy: name/email in a URL end up in history and logs — leave those two `null` unless IT approves.
+- Research (IRM's public page JavaScript, 2026-10-02) that led to the confirmed format above: query params also read are `a` (amount), `f` (frequency), `d` (duration), `n`/`note`, `r`/`return_url` — not used by the app yet, since the path-segment form already works. No name/email prefill params were found in that research.
 
 ## Website oddities spotted (abuhuraira.org, 2026-10-02)
 
@@ -132,7 +132,7 @@ Config: `src/config/donations.ts`. IRM issues tax receipts, so the app has no re
 
 ## Open questions for Amaar / Muslimoon
 
-1. IRM: the exact checkout URL and param names; whether frequency is labels ("Monthly") or d/w/m; how one-time gifts are handled; whether name/email can be prefilled; the campaign id for each cause (including Dollar a Day).
+1. IRM: checkout URL format confirmed (`realm/<slug>/<amount>/<frequency>`, lowercase labels). Still need: the real campaign slug for each cause (including Dollar a Day), whether `/frequency` alone sets up recurring billing, and whether name/email can be prefilled.
 2. Forms: the public submit route, payload and response, captcha; the sandbox org id for form `7a9da4d3-…`; how programs reference forms.
 3. Settings: where YouTube/socials should live (`org-settings.footer.social_links`?); why `/v1/<org>/settings` returns 500; filling in `contact_info`.
 4. CORS for browser origins (web build).

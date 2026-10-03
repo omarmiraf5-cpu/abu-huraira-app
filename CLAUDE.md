@@ -25,7 +25,7 @@ Built by Omar Abdullahi (Buraaqtech) for Abu Huraira Center, North York, ON (abu
 - Event/program detail screen (`app/event/[id].tsx`): schedule, fee, audience, curriculum, registration. Registration shows an external link when the CMS provides one, or renders a Muslimoon public form (`fetchFormSchema` + `src/components/forms/FormRenderer.tsx`) when it has a `formId` — in-app **submission is off** (`FORM_SUBMISSION_ENABLED = false` in `muslimoon.ts`) until Muslimoon documents the submit route/payload.
 - Announcements: Muslimoon's `announcement-bar` endpoint (confirmed live for AHC's org, Amaar activated it 2026-10-02) shown on Home; falls back to 3 real website announcements when empty.
 - Static details (`src/hooks/useStaticDetails.ts`, reads `org-settings`): contact info and YouTube link for the More tab. Muslimoon's CMS fields are empty today, so these fall back to real values captured from abuhuraira.org (address, phone, YouTube `@AbuHurairaCenter` / `UCP9ej92hIt-X16--0_MMwPA`) — CMS values will override once Amaar fills them in.
-- Donations open AHC's IRM checkout `https://app.irm.io/abuhuraira.org/e/checkout` (`src/config/donations.ts`), now with a frequency picker (one-time/daily/weekly/monthly). All IRM query-param names and the IRM↔cause campaign-slug mapping are still **placeholders** pending a real sample checkout link from Amaar — nothing is appended to the URL yet. No PII in URLs by default. Mock login toggle is `__DEV__` only.
+- Donations open AHC's IRM checkout (`src/config/donations.ts`), with a frequency picker (one-time/daily/weekly/monthly). **Confirmed working checkout URL format (2026-10-03, tested on device):** `https://app.irm.io/<realm>/<campaign-slug>/<amount>/<frequency>` (e.g. `.../abuhuraira.org/masjid-operation/50/once`) — the originally-given bare `.../e/checkout` link does **not** work on its own (blank page, no campaign/amount attached). Causes without a known IRM slug (Dollar a Day) fall back to the realm root so the donor picks on IRM's page. Donor name/email query-param names are still unconfirmed placeholders — not sent. No PII in URLs by default. Mock login toggle is `__DEV__` only.
 - Local reminders (`src/notifications/`): salah at adhan or N min before iqamah, per prayer, Jumu'ah replaces Dhuhr on Fridays, class/event reminders 1h or 1 day before. Live data only; Toronto wall-clock → UTC (DST-safe); 7-day rolling window, ≤ 60 pending (iOS limit 64). Android `SCHEDULE_EXACT_ALARM` declared (needs Play Console declaration).
 - Sharing: `SHARING.md` (web preview link, `npm run share` tunnel for Expo Go, `eas.json` preview/production builds).
 - Brand: `BRANDING.md`; a "Abu Huraira Center App" design system was published for Sheikh Amaar's sign-off. Jewel/sky tones are additions pending approval; formal AHC brand book still pending.
@@ -47,14 +47,14 @@ Events/programs/campaigns are empty on purpose: AHC is holding off populating th
 9. "Quran app demo" — scope still unclear; asked Sheikh Amaar, no answer yet.
 
 ## Open questions for AHC / IT
-- IRM: a real sample checkout link to confirm the exact query param *names* for
-  name/email/amount/campaign/frequency (Amaar confirmed these are accepted conceptually,
-  2026-10-02; `docs/muslimoon-api.md` has unconfirmed reverse-engineered routes/params from IRM's
-  own page JS — nothing from that research is enabled). Also decide whether to actually send
-  name/email via URL at all — conflicts with this app's existing no-PII-in-URL policy
-  (`src/config/donations.ts`); may be better to only pass amount/campaign/frequency and let the
-  donor fill in name/email on IRM's own page. Also: is one-time vs. recurring handled by a
-  frequency param, or a different flow entirely?
+- IRM: the realm/campaign-slug/amount/frequency checkout path is confirmed working (see above) —
+  still need the real campaign slugs for every cause (only general/zakat/sadaqah/automate-your-jummah
+  are guessed from abuhuraira.org; confirm these are the actual IRM slugs, and get one for
+  "Dollar a Day"). Also still unconfirmed: the query-param names for donor name/email (decide
+  whether to send them at all — conflicts with this app's no-PII-in-URL policy; may be better to
+  let the donor fill those in on IRM's own page) and how recurring gifts actually get tracked
+  (does the `/frequency` path segment alone set up a recurring charge, or does IRM need something
+  else?).
 - Muslimoon: form id(s) once AHC creates real registration forms in the CMS, and how a
   program/event is supposed to reference its form (`form_id` field?) — the submit endpoint and
   payload shape itself are still undocumented (GET works, POST contract unconfirmed).

@@ -15,7 +15,7 @@ import {
   singleWeekday,
   youtubeUrlFrom,
 } from '@/src/api/muslimoon';
-import { buildCheckoutUrl, checkoutHandoff } from '@/src/config/donations';
+import { buildCheckoutUrl } from '@/src/config/donations';
 import { eventDateBadge } from '@/src/utils/events';
 
 let fail = 0;
@@ -91,11 +91,24 @@ ok(youtubeUrlFrom('@AbuHurairaCenter') === 'https://www.youtube.com/@AbuHurairaC
 ok(youtubeUrlFrom('youtube.com/abuhurairacenter') === 'https://youtube.com/abuhurairacenter', 'bare domain → https');
 ok(youtubeUrlFrom('https://evil.example/youtube') === undefined, 'non-YouTube URL rejected');
 
-// IRM handoff (placeholders → nothing appended yet)
-const h = checkoutHandoff({ amount: 50, frequency: 'monthly', campaignId: 'zakat', name: ' A ', email: 'a@b.co' });
-ok(h.frequency === 'm' && h.campaign === 'zakat-al-maal' && h.name === 'A' && h.amount === 50, 'handoff carries name, email, amount, campaign, frequency');
-ok(checkoutHandoff({ amount: 10 }).frequency === undefined, 'one-time sends no frequency code');
-ok(buildCheckoutUrl({ amount: 50, frequency: 'weekly', name: 'A', email: 'a@b.co' }) === 'https://app.irm.io/abuhuraira.org/e/checkout', 'no params appended until names are confirmed');
+// IRM checkout URL — confirmed working format (2026-10-03): realm/<slug>/<amount>/<frequency>
+ok(
+  buildCheckoutUrl({ amount: 50, frequency: 'monthly', campaignId: 'zakat' }) ===
+    'https://app.irm.io/abuhuraira.org/zakat-al-maal/50/monthly',
+  'known cause + amount builds realm/slug/amount/frequency',
+);
+ok(
+  buildCheckoutUrl({ amount: 10 }) === 'https://app.irm.io/abuhuraira.org',
+  'defaults to one-time frequency, no campaign given',
+);
+ok(
+  buildCheckoutUrl({ amount: 50, campaignId: 'dollar-a-day' }) === 'https://app.irm.io/abuhuraira.org',
+  'cause with no known IRM slug falls back to the realm root',
+);
+ok(
+  buildCheckoutUrl({ amount: 50, frequency: 'weekly', name: 'A', email: 'a@b.co' }) === 'https://app.irm.io/abuhuraira.org',
+  'name/email not appended until their param names are confirmed',
+);
 
 console.log(fail ? `${fail} FAILED` : 'ALL PASSED');
 if (fail) process.exit(1);
